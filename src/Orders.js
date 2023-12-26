@@ -24,7 +24,10 @@ export default function Orders(props) {
             <TableCell>Name</TableCell>
             <TableCell>Account</TableCell>
               {props.accounts.map(a => {
-                  return <TableCell key={a.name}>{a.name} [{a.startingBalance}]</TableCell>
+                  return <>
+                      <TableCell key={a.name}>{a.name}</TableCell>
+                      <TableCell key={a.name+"_startingbalance"}>${a.startingBalance}</TableCell>
+                  </>
               })}
             <TableCell align="right">Sum</TableCell>
           </TableRow>
@@ -44,9 +47,15 @@ export default function Orders(props) {
                         let balance = (a.startingBalance + a.runningBalance).toFixed(2).toString();
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
-                            return <TableCell key={a.name + "_amount"}>{row.amount} [{balance}]</TableCell>
+                            return <>
+                                <TableCell key={a.name + "_amount"}>{row.amount}</TableCell>
+                                <TableCell key={a.name + "_balance"}>{balance}</TableCell>
+                            </>
                         } else {
-                            return <TableCell key={a.name + "_amount"}>[{balance}]</TableCell>
+                            return <>
+                                <TableCell key={a.name + "_amount"}>0.00</TableCell>
+                                <TableCell key={a.name + "_balance"}>{balance}</TableCell>
+                            </>
                         }
                     })}
                   <TableCell align="right" key={"sum"}>{`$${sum.toFixed(2)}`}</TableCell>
