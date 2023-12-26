@@ -15,19 +15,19 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Saved reports
     </ListSubheader>
-    <ListItemButton>
+    <ListItemButton disabled={true}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Current month" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton disabled={true}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton disabled={true}>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
