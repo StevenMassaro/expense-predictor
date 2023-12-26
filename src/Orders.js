@@ -26,7 +26,7 @@ export default function Orders(props) {
               {props.accounts.map(a => {
                   return <>
                       <TableCell key={a.name}>{a.name}</TableCell>
-                      <TableCell key={a.name+"_startingbalance"}>${a.startingBalance}</TableCell>
+                      <TableCell align="right" key={a.name+"_startingbalance"}>${a.startingBalance}</TableCell>
                   </>
               })}
             <TableCell align="right">Sum</TableCell>
@@ -44,17 +44,17 @@ export default function Orders(props) {
                         if (a.name === row.account) {
                             a.runningBalance += row.amount;
                         }
-                        let balance = (a.startingBalance + a.runningBalance).toFixed(2).toString();
+                        let balance = (a.startingBalance + a.runningBalance).toFixed(2);
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
                             return <>
-                                <TableCell key={a.name + "_amount"}>{row.amount}</TableCell>
-                                <TableCell key={a.name + "_balance"}>{balance}</TableCell>
+                                <TableCell align="right" key={a.name + "_amount"}>{row.amount.toFixed(2)}</TableCell>
+                                <TableCell align="right" key={a.name + "_balance"}>{balance}</TableCell>
                             </>
                         } else {
                             return <>
-                                <TableCell key={a.name + "_amount"}>0.00</TableCell>
-                                <TableCell key={a.name + "_balance"}>{balance}</TableCell>
+                                <TableCell align="right" key={a.name + "_amount"}>0.00</TableCell>
+                                <TableCell align="right" key={a.name + "_balance"}>{balance}</TableCell>
                             </>
                         }
                     })}
