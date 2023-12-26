@@ -23,7 +23,9 @@ export default function Orders(props) {
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Account</TableCell>
-            <TableCell>Amount</TableCell>
+              {props.accounts.map(a => {
+                  return <TableCell key={a.name}>{a.name} [{a.startingBalance}]</TableCell>
+              })}
             <TableCell align="right">Sum</TableCell>
           </TableRow>
         </TableHead>
@@ -31,12 +33,23 @@ export default function Orders(props) {
           {props.buildTransactions().map((row) => {
             sum += row.amount;
             return (
-                <TableRow key={row.id}>
-                  <TableCell>{new Date(Date.parse(row.date)).toDateString()}</TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.account}</TableCell>
-                  <TableCell>{`$${row.amount}`}</TableCell>
-                  <TableCell align="right">{`$${sum.toFixed(2)}`}</TableCell>
+                <TableRow key={row.date + row.name + "_transaction"}>
+                  <TableCell key={"date"}>{new Date(Date.parse(row.date)).toDateString()}</TableCell>
+                  <TableCell key={"name"}>{row.name}</TableCell>
+                  <TableCell key={"account"}>{row.account}</TableCell>
+                    {props.accounts.map(a => {
+                        if (a.name === row.account) {
+                            a.runningBalance += row.amount;
+                        }
+                        let balance = (a.startingBalance + a.runningBalance).toFixed(2).toString();
+                        // todo improve the reliability of matching the account here
+                        if (a.name === row.account) {
+                            return <TableCell key={a.name + "_amount"}>{row.amount} [{balance}]</TableCell>
+                        } else {
+                            return <TableCell key={a.name + "_amount"}>[{balance}]</TableCell>
+                        }
+                    })}
+                  <TableCell align="right" key={"sum"}>{`$${sum.toFixed(2)}`}</TableCell>
                 </TableRow>
             );
           })}

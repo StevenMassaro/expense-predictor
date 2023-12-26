@@ -75,7 +75,7 @@ class App extends Component {
 
   account(name, startingBalance, asOfDate) {
     let asOfDateString = asOfDate.toString()
-    return { name, startingBalance, asOfDate: asOfDateString };
+    return { name, startingBalance, asOfDate: asOfDateString, runningBalance: 0 };
   }
 
   buildTransactions = () => {
@@ -103,6 +103,10 @@ class App extends Component {
     transactions.sort((t1, t2) => {
       // todo - parsing dates here is probably an inefficient way of doing this comparison
       return Date.parse(t1.date) - Date.parse(t2.date)
+    })
+
+    this.state.accounts.forEach(a => {
+      a.runningBalance = 0;
     })
 
     return transactions;
