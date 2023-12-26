@@ -16,7 +16,7 @@ export default function Orders(props) {
   let sum = props.accounts.map(a => a.startingBalance).reduce((prev, next) => prev + next);
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Upcoming Transactions</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
