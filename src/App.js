@@ -113,14 +113,19 @@ class App extends Component {
   };
 
   _addRecurringTransaction(transactions, year, i, recur, monthCount) {
-    transactions.push(this.transaction(
-        0,
-        new Date(year, i, recur.scheduleDay),
-        recur.name,
-        recur.account,
-        recur.amount,
-        "recurring"
-    ))
+    const todayDate = new Date().getDate();
+    if (recur.scheduleDay < todayDate && monthCount ===1) {
+      console.log("should skip bc of already happened this month")
+    } else {
+      transactions.push(this.transaction(
+          0,
+          new Date(year, i, recur.scheduleDay),
+          recur.name,
+          recur.account,
+          recur.amount,
+          "recurring"
+      ))
+    }
     monthCount++;
     return monthCount;
   }
