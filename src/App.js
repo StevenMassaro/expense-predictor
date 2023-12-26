@@ -82,19 +82,20 @@ class App extends Component {
     let transactions = []
     transactions = transactions.concat(this.state.rows);
     const today = new Date();
+    let desiredFutureMonths = 12;
 
     this.state.recurring.forEach(recur => {
       if (recur.schedule === "monthly") {
+        let monthCount = 1;
         const month = today.getMonth();
         for (let i = month; i < 12; i++) {
-          transactions.push(this.transaction(
-              0,
-              new Date(today.getFullYear(), i, recur.scheduleDay),
-              recur.name,
-              recur.account,
-              recur.amount,
-              "recurring"
-          ))
+          monthCount = this._addRecurringTransaction(transactions, today.getFullYear(), i, recur, monthCount);
+        }
+        if (monthCount < desiredFutureMonths) {
+          let nextYear = today.getFullYear() + 1;
+          for (let i = 0; i <= desiredFutureMonths - monthCount; i++) {
+            this._addRecurringTransaction(transactions, nextYear, i, recur, monthCount);
+          }
         }
       }
     })
@@ -106,6 +107,19 @@ class App extends Component {
 
     return transactions;
   };
+
+  _addRecurringTransaction(transactions, year, i, recur, monthCount) {
+    transactions.push(this.transaction(
+        0,
+        new Date(year, i, recur.scheduleDay),
+        recur.name,
+        recur.account,
+        recur.amount,
+        "recurring"
+    ))
+    monthCount++;
+    return monthCount;
+  }
 
   exportJson = () => {
     let data = {
