@@ -26,8 +26,11 @@ export default function Orders(props) {
             <TableCell>Account</TableCell>
               {props.accounts.map(a => {
                   return <React.Fragment key={a.name + "_frag"}>
-                      <TableCell key={a.name}>{a.name}</TableCell>
-                      <TableCell align="right" key={a.name+"_startingbalance"}>${a.startingBalance}</TableCell>
+                      <TableCell key={a.name} title={"Starting balance updated " + a.asOfDate}>{a.name}</TableCell>
+                      <TableCell align="right" key={a.name+"_startingbalance"} title={"Starting balance updated " + a.asOfDate} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                          const newStartingBalance = Number(e.currentTarget.textContent.replace("$", ""));
+                          props.editStartingBalance(a, newStartingBalance)
+                      }}>${a.startingBalance}</TableCell>
                   </React.Fragment>
               })}
             <TableCell align="right">Sum</TableCell>

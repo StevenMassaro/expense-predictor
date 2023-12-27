@@ -236,6 +236,7 @@ function DashboardContent(props) {
                     addRemovedTransaction={props.addRemovedTransaction}
                     editDate={props.editDate}
                     editAmount={props.editAmount}
+                    editStartingBalance={props.editStartingBalance}
                   />
                 </Paper>
               </Grid>
@@ -257,5 +258,6 @@ export default function Dashboard(props) {
       addRemovedTransaction={props.addRemovedTransaction}
       editDate={props.editDate}
       editAmount={props.editAmount}
+      editStartingBalance={props.editStartingBalance}
   />;
 }
