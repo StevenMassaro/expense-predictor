@@ -62,7 +62,7 @@ export default function Orders(props) {
                                     const newAmount = Number(e.currentTarget.textContent)
                                     props.editAmount(row, newAmount, row.type === "recurring")
                                 }}>{row.amount.toFixed(2)}</TableCell>
-                                <TableCell align="right" key={row.date + row.name +a.name + "_balance"}>{balance}</TableCell>
+                                <TableCell align="right" key={row.date + row.name +a.name + "_balance"} style={{color: balance <= 0 ? "red" : "black"}}>{balance}</TableCell>
                             </React.Fragment>
                         } else {
                             return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
