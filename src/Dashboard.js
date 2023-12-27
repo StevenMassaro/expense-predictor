@@ -233,6 +233,7 @@ function DashboardContent(props) {
                   <Orders
                     accounts={props.accounts}
                     buildTransactions={props.buildTransactions}
+                    addRemovedTransaction={props.addRemovedTransaction}
                   />
                 </Paper>
               </Grid>
@@ -251,5 +252,6 @@ export default function Dashboard(props) {
       buildTransactions={props.buildTransactions}
       exportJson={props.exportJson}
       importJson={props.importJson}
+      addRemovedTransaction={props.addRemovedTransaction}
   />;
 }

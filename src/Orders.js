@@ -20,6 +20,7 @@ export default function Orders(props) {
       <Table size="small">
         <TableHead>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Account</TableCell>
@@ -37,6 +38,9 @@ export default function Orders(props) {
             sum += row.amount;
             return (
                 <TableRow key={row.date + row.name + "_transaction"}>
+                  <TableCell key={"remove"}><input type="checkbox" id="complete-transaction" onClick={x => {
+                      props.addRemovedTransaction(row)
+                  }}/></TableCell>
                   <TableCell key={"date"}>{new Date(Date.parse(row.date)).toDateString()}</TableCell>
                   <TableCell key={"name"}>{row.name}</TableCell>
                   <TableCell key={"account"}>{row.account}</TableCell>

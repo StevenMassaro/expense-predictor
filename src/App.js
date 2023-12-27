@@ -17,6 +17,9 @@ class App extends Component {
       ],
       accounts: [
 
+      ],
+      removedTransactions: [
+
       ]
     }
   }
@@ -41,7 +44,7 @@ class App extends Component {
     if (_.isEmpty(this.state.rows) && _.isEmpty(this.state.recurring) && _.isEmpty(this.state.accounts)) {
       let jsonString = localStorage.getItem(this.storedExpensesLocalStorageKey);
       if (jsonString) {
-        this.setStateFromJsonString(jsonString)
+        this.setStateFromJsonString(jsonString, null)
       }
     }
 
@@ -64,6 +67,14 @@ class App extends Component {
         }
       }
     })
+
+    if (this.state.removedTransactions) {
+      transactions = transactions.filter(t => {
+        return _.isUndefined(this.state.removedTransactions.find(rt => {
+          return _.isEqual(rt, t);
+        }))
+      })
+    }
 
     transactions.sort((t1, t2) => {
       // todo - parsing dates here is probably an inefficient way of doing this comparison
@@ -96,18 +107,7 @@ class App extends Component {
   }
 
   exportJson = () => {
-    let data = {
-      rows: this.state.rows,
-      accounts: this.state.accounts,
-      recurring: this.state.recurring
-    }
-
-    data.accounts.forEach(a => {
-      delete a.runningBalance;
-    });
-
-    const dataStr = JSON.stringify(data)
-    console.log(dataStr)
+    const dataStr = this.jsonifyState();
 
     // todo - improve this file download logic
 
@@ -119,6 +119,21 @@ class App extends Component {
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
+  }
+
+  jsonifyState() {
+    let data = {
+      rows: this.state.rows,
+      accounts: this.state.accounts,
+      recurring: this.state.recurring,
+      removedTransactions: this.state.removedTransactions
+    }
+
+    data.accounts.forEach(a => {
+      delete a.runningBalance;
+    });
+
+    return JSON.stringify(data)
   }
 
   importJson = () => {
@@ -139,8 +154,7 @@ class App extends Component {
       reader.onload = readerEvent => {
         const content = readerEvent.target.result; // this is the content!
         console.log( content );
-        this.setStateFromJsonString(content);
-        localStorage.setItem(this.storedExpensesLocalStorageKey, content);
+        this.setStateFromJsonString(content, () => this.updateLocalStorage());
       }
 
     }
@@ -148,14 +162,25 @@ class App extends Component {
     input.click();
   }
 
-  setStateFromJsonString(jsonString) {
+  setStateFromJsonString(jsonString, callback) {
     const parsed = JSON.parse(jsonString)
     console.log(parsed)
     this.setState({
       accounts: parsed.accounts,
       rows: parsed.rows,
-      recurring: parsed.recurring
-    })
+      recurring: parsed.recurring,
+      removedTransactions: parsed.removedTransactions || []
+    }, callback)
+  }
+
+  updateLocalStorage() {
+    localStorage.setItem(this.storedExpensesLocalStorageKey, this.jsonifyState())
+  }
+
+  addRemovedTransaction = (transaction) => {
+    this.setState({
+      removedTransactions: [...this.state.removedTransactions, transaction]
+    }, () => this.updateLocalStorage())
   }
 
 
@@ -165,6 +190,7 @@ class App extends Component {
         buildTransactions={this.buildTransactions}
         exportJson={this.exportJson}
         importJson={this.importJson}
+        addRemovedTransaction={this.addRemovedTransaction}
     />)
   }
 }
