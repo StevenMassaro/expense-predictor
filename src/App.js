@@ -2,8 +2,10 @@ import logo from './logo.svg';
 import './App.css';
 import Dashboard from "./Dashboard";
 import React, { Component } from 'react';
+var _ = require('lodash');
 
 class App extends Component {
+  storedExpensesLocalStorageKey = "stored-expenses";
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +37,14 @@ class App extends Component {
 
   buildTransactions = () => {
     let transactions = []
+
+    if (_.isEmpty(this.state.rows) && _.isEmpty(this.state.recurring) && _.isEmpty(this.state.accounts)) {
+      let jsonString = localStorage.getItem(this.storedExpensesLocalStorageKey);
+      if (jsonString) {
+        this.setStateFromJsonString(jsonString)
+      }
+    }
+
     transactions = transactions.concat(this.state.rows);
     const today = new Date();
     let desiredFutureMonths = 12;
@@ -129,18 +139,23 @@ class App extends Component {
       reader.onload = readerEvent => {
         const content = readerEvent.target.result; // this is the content!
         console.log( content );
-        const parsed = JSON.parse(content)
-        console.log(parsed)
-        this.setState({
-          accounts: parsed.accounts,
-          rows: parsed.rows,
-          recurring: parsed.recurring
-        })
+        this.setStateFromJsonString(content);
+        localStorage.setItem(this.storedExpensesLocalStorageKey, content);
       }
 
     }
 
     input.click();
+  }
+
+  setStateFromJsonString(jsonString) {
+    const parsed = JSON.parse(jsonString)
+    console.log(parsed)
+    this.setState({
+      accounts: parsed.accounts,
+      rows: parsed.rows,
+      recurring: parsed.recurring
+    })
   }
 
 
