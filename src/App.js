@@ -8,58 +8,13 @@ class App extends Component {
     super(props);
     this.state = {
       recurring: [
-        this.recurringTransaction(
-            0,
-            "monthly",
-            1,
-            "Mortgage",
-            "Joint savings",
-            ***REMOVED***
-        ),
-        this.recurringTransaction(
-            0,
-            "monthly",
-            1,
-            "Salary",
-            "Joint savings",
-            ***REMOVED***
-        ),
-        this.recurringTransaction(
-            0,
-            "monthly",
-            15,
-            "Salary",
-            "Joint savings",
-            ***REMOVED***
-        )
+
       ],
       rows: [
-        this.transaction(
-            0,
-            new Date(2023, 1, 5),
-            'Structural engineer',
-            'Personal checking',
-            ***REMOVED***,
-        ),
-        this.transaction(
-            1,
-            new Date(2023, 1, 13),
-            'Close on house',
-            'Joint savings',
-            ***REMOVED***,
-        ),
+
       ],
       accounts: [
-        this.account(
-            "Joint savings",
-            ***REMOVED***,
-            new Date(2023, 1, 2)
-        ),
-        this.account(
-            "Personal checking",
-            ***REMOVED***,
-            new Date(2023, 1, 2)
-        )
+
       ]
     }
   }
