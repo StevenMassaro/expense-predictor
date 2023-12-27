@@ -183,6 +183,17 @@ class App extends Component {
     }, () => this.updateLocalStorage())
   }
 
+  editDate = (transaction, newDate) => {
+      this.setState((prevState) => {
+          return prevState.rows.map(pt => {
+              if (_.isEqual(pt, transaction)) {
+                  pt.date = newDate;
+              }
+              return pt;
+          })
+      })
+  }
+
 
   render() {
     return (<Dashboard
@@ -191,6 +202,7 @@ class App extends Component {
         exportJson={this.exportJson}
         importJson={this.importJson}
         addRemovedTransaction={this.addRemovedTransaction}
+        editDate={this.editDate}
     />)
   }
 }
