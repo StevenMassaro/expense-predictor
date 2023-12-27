@@ -136,6 +136,11 @@ class App extends Component {
       accounts: this.state.accounts,
       recurring: this.state.recurring
     }
+
+    data.accounts.forEach(a => {
+      delete a.runningBalance;
+    });
+
     const dataStr = JSON.stringify(data)
     console.log(dataStr)
 
