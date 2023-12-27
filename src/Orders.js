@@ -41,14 +41,10 @@ export default function Orders(props) {
                   <TableCell key={"remove"}><input type="checkbox" id="complete-transaction" onClick={x => {
                       props.addRemovedTransaction(row)
                   }}/></TableCell>
-                  <TableCell key={"date"}>{
-                      row.type === "recurring" ?
-                          new Date(Date.parse(row.date)).toDateString() :
-                          <input type="date" id="start" value={row.date} onChange={e => {
-                              const newDate = e.target.value;
-                              props.editDate(row, newDate)
-                          }}/>}
-                  </TableCell>
+                  <TableCell key={"date"} contentEditable={row.type !== "recurring"} onBlur={e => {
+                      const newDate = e.currentTarget.textContent;
+                      props.editDate(row, newDate)
+                  }}>{new Date(Date.parse(row.date)).toDateString()}</TableCell>
                   <TableCell key={"name"}>{row.name}</TableCell>
                   <TableCell key={"account"}>{row.account}</TableCell>
                     {props.accounts.map(a => {
