@@ -41,7 +41,7 @@ export default function Orders(props) {
                   <TableCell key={"remove"}><input type="checkbox" id="complete-transaction" onClick={x => {
                       props.addRemovedTransaction(row)
                   }}/></TableCell>
-                  <TableCell key={"date"} contentEditable={row.type !== "recurring"} onBlur={e => {
+                  <TableCell key={"date"} contentEditable={row.type !== "recurring"} suppressContentEditableWarning={true} onBlur={e => {
                       const newDate = e.currentTarget.textContent;
                       props.editDate(row, newDate)
                   }}>{row.date}</TableCell>
@@ -55,7 +55,7 @@ export default function Orders(props) {
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
                             return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
-                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} onBlur={e => {
+                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                                     const newAmount = Number(e.currentTarget.textContent)
                                     props.editAmount(row, newAmount, row.type === "recurring")
                                 }}>{row.amount.toFixed(2)}</TableCell>
