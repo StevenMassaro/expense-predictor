@@ -25,8 +25,7 @@ class App extends Component {
   }
 
   transaction(id, date, name, account, amount, type = "individual") {
-    let dateString = date.toISOString()
-    return { id, date: dateString, name, account, amount, type };
+    return { id, date: date, name, account, amount, type };
   }
 
   recurringTransaction(id, schedule, scheduleDay, name, account, amount) {
@@ -95,7 +94,7 @@ class App extends Component {
     } else {
       transactions.push(this.transaction(
           0,
-          new Date(year, i, recur.scheduleDay),
+          new Date(year, i, recur.scheduleDay).toLocaleDateString('en-CA'),
           recur.name,
           recur.account,
           recur.amount,

@@ -44,7 +44,7 @@ export default function Orders(props) {
                   <TableCell key={"date"} contentEditable={row.type !== "recurring"} onBlur={e => {
                       const newDate = e.currentTarget.textContent;
                       props.editDate(row, newDate)
-                  }}>{new Date(Date.parse(row.date)).toDateString()}</TableCell>
+                  }}>{row.date}</TableCell>
                   <TableCell key={"name"}>{row.name}</TableCell>
                   <TableCell key={"account"}>{row.account}</TableCell>
                     {props.accounts.map(a => {
