@@ -59,7 +59,10 @@ export default function Orders(props) {
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
                             return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
-                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"}>{row.amount.toFixed(2)}</TableCell>
+                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} onBlur={e => {
+                                    const newAmount = Number(e.currentTarget.textContent)
+                                    props.editAmount(row, newAmount, row.type === "recurring")
+                                }}>{row.amount.toFixed(2)}</TableCell>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_balance"}>{balance}</TableCell>
                             </React.Fragment>
                         } else {

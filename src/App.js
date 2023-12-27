@@ -191,9 +191,19 @@ class App extends Component {
               }
               return pt;
           })
-      })
+      }, this.updateLocalStorage)
   }
 
+  editAmount = (transaction, newAmount, isRecurring = false) => {
+    this.setState((prevState) => {
+      return prevState.rows.map(pt => {
+        if (_.isEqual(pt, transaction)) {
+          pt.amount = newAmount;
+        }
+        return pt;
+      })
+    }, this.updateLocalStorage)
+  }
 
   render() {
     return (<Dashboard
@@ -203,6 +213,7 @@ class App extends Component {
         importJson={this.importJson}
         addRemovedTransaction={this.addRemovedTransaction}
         editDate={this.editDate}
+        editAmount={this.editAmount}
     />)
   }
 }

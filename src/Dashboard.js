@@ -235,6 +235,7 @@ function DashboardContent(props) {
                     buildTransactions={props.buildTransactions}
                     addRemovedTransaction={props.addRemovedTransaction}
                     editDate={props.editDate}
+                    editAmount={props.editAmount}
                   />
                 </Paper>
               </Grid>
@@ -255,5 +256,6 @@ export default function Dashboard(props) {
       importJson={props.importJson}
       addRemovedTransaction={props.addRemovedTransaction}
       editDate={props.editDate}
+      editAmount={props.editAmount}
   />;
 }
