@@ -154,6 +154,7 @@ class App extends Component {
   importJson = () => {
     const input = document.createElement('input');
     input.type = 'file';
+    input.accept = '.json';
 
     input.onchange = e => {
 
