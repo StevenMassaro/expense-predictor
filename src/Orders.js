@@ -13,7 +13,7 @@ function preventDefault(event) {
 
 export default function Orders(props) {
     // todo sum should be calculated elsewhere
-  let sum = props.accounts.map(a => a.startingBalance).reduce((prev, next) => prev + next);
+  let sum = props.accounts.map(a => a.startingBalance).reduce((prev, next) => prev + next, 0);
   return (
     <React.Fragment>
       <Title>Upcoming Transactions</Title>
