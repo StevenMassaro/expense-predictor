@@ -24,10 +24,10 @@ export default function Orders(props) {
             <TableCell>Name</TableCell>
             <TableCell>Account</TableCell>
               {props.accounts.map(a => {
-                  return <>
+                  return <React.Fragment key={a.name + "_frag"}>
                       <TableCell key={a.name}>{a.name}</TableCell>
                       <TableCell align="right" key={a.name+"_startingbalance"}>${a.startingBalance}</TableCell>
-                  </>
+                  </React.Fragment>
               })}
             <TableCell align="right">Sum</TableCell>
           </TableRow>
@@ -47,15 +47,15 @@ export default function Orders(props) {
                         let balance = (a.startingBalance + a.runningBalance).toFixed(2);
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
-                            return <>
-                                <TableCell align="right" key={a.name + "_amount"}>{row.amount.toFixed(2)}</TableCell>
-                                <TableCell align="right" key={a.name + "_balance"}>{balance}</TableCell>
-                            </>
+                            return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
+                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"}>{row.amount.toFixed(2)}</TableCell>
+                                <TableCell align="right" key={row.date + row.name +a.name + "_balance"}>{balance}</TableCell>
+                            </React.Fragment>
                         } else {
-                            return <>
-                                <TableCell align="right" key={a.name + "_amount"}>0.00</TableCell>
-                                <TableCell align="right" key={a.name + "_balance"}>{balance}</TableCell>
-                            </>
+                            return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
+                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"}>0.00</TableCell>
+                                <TableCell align="right" key={row.date + row.name +a.name + "_balance"}>{balance}</TableCell>
+                            </React.Fragment>
                         }
                     })}
                   <TableCell align="right" key={"sum"}>{`$${sum.toFixed(2)}`}</TableCell>
