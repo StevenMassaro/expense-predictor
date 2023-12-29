@@ -28,7 +28,7 @@ export default function Orders(props) {
                   return <React.Fragment key={a.name + "_frag"}>
                       <TableCell key={a.name} title={"Starting balance updated " + a.asOfDate}>{a.name}</TableCell>
                       <TableCell align="right" key={a.name+"_startingbalance"} title={"Starting balance updated " + a.asOfDate} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
-                          const newStartingBalance = Number(e.currentTarget.textContent.replace("$", ""));
+                          const newStartingBalance = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""));
                           props.editStartingBalance(a, newStartingBalance)
                       }}>${a.startingBalance}</TableCell>
                   </React.Fragment>
@@ -59,7 +59,7 @@ export default function Orders(props) {
                         if (a.name === row.account) {
                             return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
-                                    const newAmount = Number(e.currentTarget.textContent)
+                                    const newAmount = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""))
                                     props.editAmount(row, newAmount, row.type === "recurring")
                                 }}>{row.amount.toFixed(2)}</TableCell>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_balance"} style={{color: balance <= 0 ? "red" : "black"}}>{balance}</TableCell>
