@@ -38,7 +38,10 @@ export default function ExpensesContents(props) {
                 }}>{row.date}</TableCell>
                 <TableCell key={"name"}>{row.name}</TableCell>
                 <TableCell key={"account"}>{row.account}</TableCell>
-                <TableCell align="right" key={"amount"}>{`$${row.amount.toFixed(2)}`}</TableCell>
+                <TableCell align="right" key={row.date + row.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                  const newAmount = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""))
+                  props.editRowAmount(row, newAmount)
+                }}>{`$${row.amount.toFixed(2)}`}</TableCell>
               </TableRow>
             );
           })}

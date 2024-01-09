@@ -224,6 +224,18 @@ class App extends Component {
     }, this.updateLocalStorage)
   }
 
+
+  editRowAmount = (row, newAmount) => {
+    this.setState((prevState) => {
+      return prevState.rows.map(pt => {
+        if (_.isEqual(pt, row)) {
+          pt.amount = newAmount;
+        }
+        return pt;
+      })
+    }, this.updateLocalStorage)
+  }
+
   editStartingBalance = (account, newStartingBalance) => {
     this.setState((prevState) => {
       return prevState.accounts.map(pa => {
@@ -247,6 +259,7 @@ class App extends Component {
         addRemovedTransaction={this.addRemovedTransaction}
         editDate={this.editDate}
         editRowDate={this.editRowDate}
+        editRowAmount={this.editRowAmount}
         editAmount={this.editAmount}
         editStartingBalance={this.editStartingBalance}
     />)

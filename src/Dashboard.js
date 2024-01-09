@@ -256,6 +256,7 @@ function DashboardContent(props) {
                       buildTransactions={props.buildTransactions}
                       addRemovedTransaction={props.addRemovedTransaction}
                       editRowDate={props.editRowDate}
+                      editRowAmount={props.editRowAmount}
                       editAmount={props.editAmount}
                       editStartingBalance={props.editStartingBalance}
                   />
@@ -281,6 +282,7 @@ export default function Dashboard(props) {
       addRemovedTransaction={props.addRemovedTransaction}
       editDate={props.editDate}
       editRowDate={props.editRowDate}
+      editRowAmount={props.editRowAmount}
       editAmount={props.editAmount}
       editStartingBalance={props.editStartingBalance}
   />;
