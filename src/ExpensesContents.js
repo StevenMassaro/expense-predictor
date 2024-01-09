@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import Transaction from "./model/Transaction";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -40,8 +41,8 @@ export default function ExpensesContents(props) {
           })}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
+      <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(0, new Date().toLocaleDateString('en-CA'), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
+        Add new expense
       </Link>
     </React.Fragment>
   );

@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Dashboard from "./Dashboard";
 import React, { Component } from 'react';
+import Transaction from "./model/Transaction";
 var _ = require('lodash');
 
 class App extends Component {
@@ -22,10 +23,6 @@ class App extends Component {
 
       ]
     }
-  }
-
-  transaction(id, date, name, account, amount, type = "individual") {
-    return { id, date: date, name, account, amount, type };
   }
 
   recurringTransaction(id, schedule, scheduleDay, name, account, amount) {
@@ -92,7 +89,7 @@ class App extends Component {
     if (recur.scheduleDay < todayDate && monthCount ===1) {
       console.log("should skip bc of already happened this month")
     } else {
-      transactions.push(this.transaction(
+      transactions.push(new Transaction(
           0,
           new Date(year, i, recur.scheduleDay).toLocaleDateString('en-CA'),
           recur.name,
@@ -182,6 +179,12 @@ class App extends Component {
     }, () => this.updateLocalStorage())
   }
 
+  addRow = (row) => {
+    this.setState({
+      rows: [...this.state.rows, row]
+    }, () => this.updateLocalStorage())
+  }
+
   editDate = (transaction, newDate) => {
       this.setState((prevState) => {
           return prevState.rows.map(pt => {
@@ -226,6 +229,7 @@ class App extends Component {
     return (<Dashboard
         accounts={this.state.accounts}
         rows={this.state.rows}
+        addRow={this.addRow}
         buildTransactions={this.buildTransactions}
         exportJson={this.exportJson}
         importJson={this.importJson}
