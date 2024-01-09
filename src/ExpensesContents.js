@@ -26,7 +26,10 @@ export default function ExpensesContents(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.rows.map((row) => {
+          {props.rows.sort((t1, t2) => {
+            // todo - parsing dates here is probably an inefficient way of doing this comparison
+            return Date.parse(t1.date) - Date.parse(t2.date)
+          }).map((row) => {
             return (
               <TableRow key={row.date + row.name + "_transaction"}>
                 <TableCell key={"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
