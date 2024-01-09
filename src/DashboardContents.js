@@ -6,7 +6,6 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-import _ from "lodash";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -39,11 +38,7 @@ export default function DashboardContents(props) {
         </TableHead>
         <TableBody>
           {props.buildTransactions().map((row) => {
-            if (_.isUndefined(row.amount)) {
-              console.log("Transaction has undefined amount: " + JSON.stringify(row))
-            } else {
-              sum += row.amount;
-            }
+            sum += row.amount;
             return (
                 <TableRow key={row.date + row.name + "_transaction"}>
                   <TableCell key={"remove"}><input type="checkbox" id="complete-transaction" onClick={x => {
@@ -56,7 +51,7 @@ export default function DashboardContents(props) {
                   <TableCell key={"name"}>{row.name}</TableCell>
                   <TableCell key={"account"}>{row.account}</TableCell>
                     {props.accounts.map(a => {
-                        if (a.name === row.account && !_.isUndefined(row.amount)) {
+                        if (a.name === row.account) {
                             a.runningBalance += row.amount;
                         }
                         let balance = (a.startingBalance + a.runningBalance).toFixed(2);
