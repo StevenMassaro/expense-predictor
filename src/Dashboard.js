@@ -255,6 +255,7 @@ function DashboardContent(props) {
                       accounts={props.accounts}
                       editRowDate={props.editRowDate}
                       editRowAmount={props.editRowAmount}
+                      deleteRow={props.deleteRow}
                   />
                 </Paper>
               </Grid>}
@@ -272,6 +273,7 @@ export default function Dashboard(props) {
       accounts={props.accounts}
       rows={props.rows}
       addRow={props.addRow}
+      deleteRow={props.deleteRow}
       buildTransactions={props.buildTransactions}
       exportJson={props.exportJson}
       importJson={props.importJson}

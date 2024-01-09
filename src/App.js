@@ -185,6 +185,18 @@ class App extends Component {
     }, () => this.updateLocalStorage())
   }
 
+  deleteRow = (row) => {
+    this.setState({
+      rows: this.state.rows.filter( pt => {
+        if (!_.isEqual(pt, row)) {
+          return true;
+        } else {
+          console.log("Deleted row " + JSON.stringify(row))
+        }
+      })
+    }, this.updateLocalStorage)
+  }
+
   editDate = (transaction, newDate) => {
       this.setState((prevState) => {
           return prevState.rows.map(pt => {
@@ -253,6 +265,7 @@ class App extends Component {
         accounts={this.state.accounts}
         rows={this.state.rows}
         addRow={this.addRow}
+        deleteRow={this.deleteRow}
         buildTransactions={this.buildTransactions}
         exportJson={this.exportJson}
         importJson={this.importJson}

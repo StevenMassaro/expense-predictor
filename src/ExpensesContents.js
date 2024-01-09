@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import Transaction from "./model/Transaction";
+import {DeleteOutline} from "@mui/icons-material";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -19,6 +20,7 @@ export default function ExpensesContents(props) {
       <Table size="small">
         <TableHead>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Account</TableCell>
@@ -31,7 +33,8 @@ export default function ExpensesContents(props) {
             return Date.parse(t1.date) - Date.parse(t2.date)
           }).map((row) => {
             return (
-              <TableRow key={row.date + row.name + "_transaction"}>
+              <TableRow key={row.date + row.name + row.id + "_transaction"}>
+                <TableCell key={row.date + row.name + row.id + "delete"} onClick={() => props.deleteRow(row)}><DeleteOutline fontSize={"small"}/></TableCell>
                 <TableCell key={"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newDate = e.currentTarget.textContent;
                   props.editRowDate(row, newDate)
