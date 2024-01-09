@@ -29,6 +29,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
+import ExpensesContents from "./ExpensesContents";
 
 function Copyright(props) {
   return (
@@ -93,9 +94,15 @@ const mdTheme = createTheme();
 
 function DashboardContent(props) {
   const [open, setOpen] = React.useState(true);
+  const dashboardContents = "Dashboard"
+  const expensesContents = "Expenses"
+  const [contents, setContents] = React.useState(dashboardContents)
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const changeContents = (newContents) => {
+    setContents(newContents)
+  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -126,7 +133,7 @@ function DashboardContent(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              {contents}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -151,13 +158,13 @@ function DashboardContent(props) {
           <Divider />
           <List component="nav">
             <React.Fragment>
-              <ListItemButton>
+              <ListItemButton onClick={() => changeContents(dashboardContents)}>
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
               </ListItemButton>
-              <ListItemButton disabled>
+              <ListItemButton onClick={() => changeContents(expensesContents)}>
                 <ListItemIcon>
                   <ShoppingCartIcon />
                 </ListItemIcon>
@@ -228,18 +235,31 @@ function DashboardContent(props) {
               {/*  </Paper>*/}
               {/*</Grid>*/}
               {/* Recent Orders */}
-              <Grid item xs={12}>
+              {contents === dashboardContents && <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <DashboardContents
-                    accounts={props.accounts}
-                    buildTransactions={props.buildTransactions}
-                    addRemovedTransaction={props.addRemovedTransaction}
-                    editDate={props.editDate}
-                    editAmount={props.editAmount}
-                    editStartingBalance={props.editStartingBalance}
+                      accounts={props.accounts}
+                      buildTransactions={props.buildTransactions}
+                      addRemovedTransaction={props.addRemovedTransaction}
+                      editDate={props.editDate}
+                      editAmount={props.editAmount}
+                      editStartingBalance={props.editStartingBalance}
                   />
                 </Paper>
-              </Grid>
+              </Grid>}
+              {contents === expensesContents && <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <ExpensesContents
+                      rows={props.rows}
+                      accounts={props.accounts}
+                      buildTransactions={props.buildTransactions}
+                      addRemovedTransaction={props.addRemovedTransaction}
+                      editDate={props.editDate}
+                      editAmount={props.editAmount}
+                      editStartingBalance={props.editStartingBalance}
+                  />
+                </Paper>
+              </Grid>}
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -252,6 +272,7 @@ function DashboardContent(props) {
 export default function Dashboard(props) {
   return <DashboardContent
       accounts={props.accounts}
+      rows={props.rows}
       buildTransactions={props.buildTransactions}
       exportJson={props.exportJson}
       importJson={props.importJson}

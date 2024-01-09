@@ -225,6 +225,7 @@ class App extends Component {
   render() {
     return (<Dashboard
         accounts={this.state.accounts}
+        rows={this.state.rows}
         buildTransactions={this.buildTransactions}
         exportJson={this.exportJson}
         importJson={this.importJson}
