@@ -11,7 +11,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders(props) {
+export default function DashboardContents(props) {
     // todo sum should be calculated elsewhere
   let sum = props.accounts.map(a => a.startingBalance).reduce((prev, next) => prev + next, 0);
   return (

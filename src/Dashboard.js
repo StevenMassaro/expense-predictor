@@ -20,7 +20,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
-import Orders from './Orders';
+import DashboardContents from './DashboardContents';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -230,7 +230,7 @@ function DashboardContent(props) {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders
+                  <DashboardContents
                     accounts={props.accounts}
                     buildTransactions={props.buildTransactions}
                     addRemovedTransaction={props.addRemovedTransaction}
