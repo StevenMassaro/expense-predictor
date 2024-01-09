@@ -253,12 +253,8 @@ function DashboardContent(props) {
                       rows={props.rows}
                       addRow={props.addRow}
                       accounts={props.accounts}
-                      buildTransactions={props.buildTransactions}
-                      addRemovedTransaction={props.addRemovedTransaction}
                       editRowDate={props.editRowDate}
                       editRowAmount={props.editRowAmount}
-                      editAmount={props.editAmount}
-                      editStartingBalance={props.editStartingBalance}
                   />
                 </Paper>
               </Grid>}
