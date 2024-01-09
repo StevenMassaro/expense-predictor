@@ -37,16 +37,16 @@ export default function ExpensesContents(props) {
               <TableRow key={row.date + row.name + row.id + "_transaction"}>
                 <TableCell key={row.date + row.name + row.id + "delete"} onClick={() => props.deleteRow(row)}><DeleteOutline fontSize={"small"}/></TableCell>
                 <TableCell key={"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
-                  const newDate = e.currentTarget.textContent;
+                  const newDate = e.currentTarget.innerText;
                   props.editRowDate(row, newDate)
                 }}>{row.date}</TableCell>
                 <TableCell key={"name"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
-                  const newName = e.currentTarget.textContent;
+                  const newName = e.currentTarget.innerText;
                   props.editRowName(row, newName)
                 }}>{row.name}</TableCell>
                 <TableCell key={"account"}>{row.account}</TableCell>
                 <TableCell align="right" key={row.date + row.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
-                  const newAmount = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""))
+                  const newAmount = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""))
                   props.editRowAmount(row, newAmount)
                 }}>{`$${!_.isNull(row.amount) && row.amount.toFixed(2)}`}</TableCell>
               </TableRow>
