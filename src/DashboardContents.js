@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import _ from "lodash";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -61,7 +62,7 @@ export default function DashboardContents(props) {
                                 <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                                     const newAmount = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""))
                                     props.editAmount(row, newAmount, row.type === "recurring")
-                                }}>{row.amount.toFixed(2)}</TableCell>
+                                }}>{!_.isNull(row.amount) && row.amount.toFixed(2)}</TableCell>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_balance"} style={{color: balance <= 0 ? "red" : "black"}}>{balance}</TableCell>
                             </React.Fragment>
                         } else {

@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import Transaction from "./model/Transaction";
 import {DeleteOutline} from "@mui/icons-material";
+import _ from "lodash";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -47,7 +48,7 @@ export default function ExpensesContents(props) {
                 <TableCell align="right" key={row.date + row.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newAmount = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""))
                   props.editRowAmount(row, newAmount)
-                }}>{`$${row.amount.toFixed(2)}`}</TableCell>
+                }}>{`$${!_.isNull(row.amount) && row.amount.toFixed(2)}`}</TableCell>
               </TableRow>
             );
           })}
