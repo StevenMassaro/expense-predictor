@@ -39,7 +39,10 @@ export default function ExpensesContents(props) {
                   const newDate = e.currentTarget.textContent;
                   props.editRowDate(row, newDate)
                 }}>{row.date}</TableCell>
-                <TableCell key={"name"}>{row.name}</TableCell>
+                <TableCell key={"name"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                  const newName = e.currentTarget.textContent;
+                  props.editRowName(row, newName)
+                }}>{row.name}</TableCell>
                 <TableCell key={"account"}>{row.account}</TableCell>
                 <TableCell align="right" key={row.date + row.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newAmount = Number(e.currentTarget.textContent.replace(",", "").replace("$", ""))

@@ -255,6 +255,7 @@ function DashboardContent(props) {
                       accounts={props.accounts}
                       editRowDate={props.editRowDate}
                       editRowAmount={props.editRowAmount}
+                      editRowName={props.editRowName}
                       deleteRow={props.deleteRow}
                   />
                 </Paper>
@@ -281,6 +282,7 @@ export default function Dashboard(props) {
       editDate={props.editDate}
       editRowDate={props.editRowDate}
       editRowAmount={props.editRowAmount}
+      editRowName={props.editRowName}
       editAmount={props.editAmount}
       editStartingBalance={props.editStartingBalance}
   />;
