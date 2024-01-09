@@ -31,7 +31,7 @@ export default function ExpensesContents(props) {
               <TableRow key={row.date + row.name + "_transaction"}>
                 <TableCell key={"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newDate = e.currentTarget.textContent;
-                  props.editDate(row, newDate)
+                  props.editRowDate(row, newDate)
                 }}>{row.date}</TableCell>
                 <TableCell key={"name"}>{row.name}</TableCell>
                 <TableCell key={"account"}>{row.account}</TableCell>
@@ -41,7 +41,7 @@ export default function ExpensesContents(props) {
           })}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(0, new Date().toLocaleDateString('en-CA'), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
+      <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), new Date().toLocaleDateString('en-CA'), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
         Add new expense
       </Link>
     </React.Fragment>
