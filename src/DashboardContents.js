@@ -38,7 +38,7 @@ export default function DashboardContents(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.buildTransactions().map((row) => {
+          {props.generatedTransactions && props.generatedTransactions.map((row) => {
             sum += row.amount;
             return (
                 <TableRow key={row.date + row.name + "_transaction"}>

@@ -239,7 +239,7 @@ function DashboardContent(props) {
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <DashboardContents
                       accounts={props.accounts}
-                      buildTransactions={props.buildTransactions}
+                      generatedTransactions={props.generatedTransactions}
                       addRemovedTransaction={props.addRemovedTransaction}
                       editDate={props.editDate}
                       editAmount={props.editAmount}
@@ -275,7 +275,7 @@ export default function Dashboard(props) {
       rows={props.rows}
       addRow={props.addRow}
       deleteRow={props.deleteRow}
-      buildTransactions={props.buildTransactions}
+      generatedTransactions={props.generatedTransactions}
       exportJson={props.exportJson}
       importJson={props.importJson}
       addRemovedTransaction={props.addRemovedTransaction}

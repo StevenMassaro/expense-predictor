@@ -3,6 +3,7 @@ import './App.css';
 import Dashboard from "./Dashboard";
 import React, { Component } from 'react';
 import Transaction from "./model/Transaction";
+import document from "react";
 var _ = require('lodash');
 
 class App extends Component {
@@ -34,16 +35,23 @@ class App extends Component {
     return { name, startingBalance, asOfDate: asOfDateString, runningBalance: 0 };
   }
 
-  buildTransactions = () => {
-    let transactions = []
+  componentDidMount() {
+    this.buildTransactions()
+  }
 
+  buildTransactions = () => {
     if (_.isEmpty(this.state.rows) && _.isEmpty(this.state.recurring) && _.isEmpty(this.state.accounts)) {
       let jsonString = localStorage.getItem(this.storedExpensesLocalStorageKey);
       if (jsonString) {
-        this.setStateFromJsonString(jsonString, null)
+        this.setStateFromJsonString(jsonString, () => this._generateTransactionsFromScopeAndPutInScope())
       }
+    } else {
+      this._generateTransactionsFromScopeAndPutInScope()
     }
+  };
 
+  _generateTransactionsFromScopeAndPutInScope() {
+    let transactions = []
     transactions = transactions.concat(this.state.rows);
     const today = new Date();
     let desiredFutureMonths = 12;
@@ -80,9 +88,8 @@ class App extends Component {
     this.state.accounts.forEach(a => {
       a.runningBalance = 0;
     })
-
-    return transactions;
-  };
+    this.setState({generatedTransactions: transactions})
+  }
 
   _addRecurringTransaction(transactions, year, i, recur, monthCount) {
     const todayDate = new Date().getDate();
@@ -171,6 +178,7 @@ class App extends Component {
 
   updateLocalStorage() {
     localStorage.setItem(this.storedExpensesLocalStorageKey, this.jsonifyState())
+    this._generateTransactionsFromScopeAndPutInScope()
   }
 
   addRemovedTransaction = (transaction) => {
@@ -277,7 +285,7 @@ class App extends Component {
         rows={this.state.rows}
         addRow={this.addRow}
         deleteRow={this.deleteRow}
-        buildTransactions={this.buildTransactions}
+        generatedTransactions={this.state.generatedTransactions}
         exportJson={this.exportJson}
         importJson={this.importJson}
         addRemovedTransaction={this.addRemovedTransaction}
