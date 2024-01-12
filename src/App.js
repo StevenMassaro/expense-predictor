@@ -169,9 +169,9 @@ class App extends Component {
     console.log(parsed)
     this.setState({
       accounts: parsed.accounts,
-      rows: parsed.rows,
+      rows: parsed.rows.map(row => _.assign(new Transaction(), row)),
       recurring: parsed.recurring,
-      removedTransactions: parsed.removedTransactions || []
+      removedTransactions: parsed.removedTransactions.map(row => _.assign(new Transaction(), row)) || []
     }, callback)
   }
 
