@@ -3,7 +3,7 @@ import './App.css';
 import Dashboard from "./Dashboard";
 import React, { Component } from 'react';
 import Transaction from "./model/Transaction";
-import document from "react";
+
 var _ = require('lodash');
 
 class App extends Component {
