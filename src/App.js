@@ -32,7 +32,7 @@ class App extends Component {
 
   account(name, startingBalance, asOfDate) {
     let asOfDateString = asOfDate.toString()
-    return { name, startingBalance, asOfDate: asOfDateString, runningBalance: 0 };
+    return { name, startingBalance, asOfDate: asOfDateString };
   }
 
   componentDidMount() {
@@ -95,9 +95,6 @@ class App extends Component {
       return Date.parse(t1.date) - Date.parse(t2.date)
     })
 
-    this.state.accounts.forEach(a => {
-      a.runningBalance = 0;
-    })
     this.setState({generatedTransactions: transactions})
   }
 
@@ -145,10 +142,6 @@ class App extends Component {
       recurring: this.state.recurring,
       removedTransactions: this.state.removedTransactions
     }
-
-    data.accounts.forEach(a => {
-      delete a.runningBalance;
-    });
 
     return JSON.stringify(data)
   }

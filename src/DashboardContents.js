@@ -15,6 +15,10 @@ function preventDefault(event) {
 export default function DashboardContents(props) {
     // todo sum should be calculated elsewhere
   let sum = props.accounts.map(a => a.startingBalance).reduce((prev, next) => prev + next, 0);
+  let runningBalances = new Map()
+  props.accounts.forEach(a => {
+    runningBalances.set(a.name, 0)
+  })
   return (
     <React.Fragment>
       <Title>Upcoming Transactions</Title>
@@ -53,9 +57,9 @@ export default function DashboardContents(props) {
                   <TableCell key={"account"}>{row.account}</TableCell>
                     {props.accounts.map(a => {
                         if (a.name === row.account) {
-                            a.runningBalance += row.amount;
+                          runningBalances.set(a.name, runningBalances.get(a.name) + row.amount)
                         }
-                        let balance = (a.startingBalance + a.runningBalance).toFixed(2);
+                        let balance = (a.startingBalance + runningBalances.get(a.name)).toFixed(2);
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
                             return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
