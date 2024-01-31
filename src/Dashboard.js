@@ -244,6 +244,7 @@ function DashboardContent(props) {
                       editDate={props.editDate}
                       editAmount={props.editAmount}
                       editStartingBalance={props.editStartingBalance}
+                      increaseDesiredMonths={props.increaseDesiredMonths}
                   />
                 </Paper>
               </Grid>}
@@ -285,5 +286,6 @@ export default function Dashboard(props) {
       editRowName={props.editRowName}
       editAmount={props.editAmount}
       editStartingBalance={props.editStartingBalance}
+      increaseDesiredMonths={props.increaseDesiredMonths}
   />;
 }

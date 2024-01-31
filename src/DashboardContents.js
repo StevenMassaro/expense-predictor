@@ -78,8 +78,8 @@ export default function DashboardContents(props) {
           })}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
+      <Link color="primary" href="#" onClick={() => props.increaseDesiredMonths(12)} sx={{ mt: 3 }}>
+        Predict one more year
       </Link>
     </React.Fragment>
   );

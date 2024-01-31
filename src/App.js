@@ -21,7 +21,8 @@ class App extends Component {
       ],
       removedTransactions: [
 
-      ]
+      ],
+      desiredMonths: 12
     }
   }
 
@@ -55,7 +56,6 @@ class App extends Component {
     const today = new Date();
     const currentMonth = today.getMonth();
     const currentYear = today.getFullYear();
-    let desiredFutureMonths = 12;
 
     this.state.recurring.forEach(recur => {
       if (recur.schedule === "monthly") {
@@ -63,9 +63,9 @@ class App extends Component {
         for (let month = currentMonth; month < 12; month++) {
           monthCount = this._addRecurringTransaction(transactions, currentYear, month, recur, monthCount);
         }
-        if (monthCount < desiredFutureMonths) {
+        if (monthCount < this.state.desiredMonths) {
           let nextYear = currentYear + 1;
-          for (let month = 0; month <= desiredFutureMonths - monthCount; month++) {
+          for (let month = 0; month <= this.state.desiredMonths - monthCount; month++) {
             this._addRecurringTransaction(transactions, nextYear, month, recur, monthCount);
           }
         }
@@ -76,7 +76,7 @@ class App extends Component {
         if (currentMonth > scheduleMonth) {
           intendedYear++;
         }
-        for (let year = intendedYear; year < ((desiredFutureMonths / 12 ) + currentYear); year++) {
+        for (let year = intendedYear; year < ((this.state.desiredMonths / 12 ) + currentYear); year++) {
           this._addRecurringTransaction(transactions, year, scheduleMonth, recur, null)
         }
       }
@@ -293,6 +293,12 @@ class App extends Component {
     }, this.updateLocalStorage)
   }
 
+  increaseDesiredMonths = (increaseBy) => {
+    this.setState({
+      desiredMonths: this.state.desiredMonths + increaseBy
+    }, this._generateTransactionsFromScopeAndPutInScope)
+  }
+
   render() {
     return (<Dashboard
         accounts={this.state.accounts}
@@ -309,6 +315,7 @@ class App extends Component {
         editRowName={this.editRowName}
         editAmount={this.editAmount}
         editStartingBalance={this.editStartingBalance}
+        increaseDesiredMonths={this.increaseDesiredMonths}
     />)
   }
 }
