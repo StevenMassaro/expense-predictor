@@ -53,20 +53,31 @@ class App extends Component {
     let transactions = []
     transactions = transactions.concat(this.state.rows);
     const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
     let desiredFutureMonths = 12;
 
     this.state.recurring.forEach(recur => {
       if (recur.schedule === "monthly") {
         let monthCount = 1;
-        const month = today.getMonth();
-        for (let i = month; i < 12; i++) {
-          monthCount = this._addRecurringTransaction(transactions, today.getFullYear(), i, recur, monthCount);
+        for (let month = currentMonth; month < 12; month++) {
+          monthCount = this._addRecurringTransaction(transactions, currentYear, month, recur, monthCount);
         }
         if (monthCount < desiredFutureMonths) {
-          let nextYear = today.getFullYear() + 1;
-          for (let i = 0; i <= desiredFutureMonths - monthCount; i++) {
-            this._addRecurringTransaction(transactions, nextYear, i, recur, monthCount);
+          let nextYear = currentYear + 1;
+          for (let month = 0; month <= desiredFutureMonths - monthCount; month++) {
+            this._addRecurringTransaction(transactions, nextYear, month, recur, monthCount);
           }
+        }
+      } else if (recur.schedule === "annually") {
+        // subtracting one here because the human enters months as 1-12, but javascript uses 0-11
+        let scheduleMonth = recur.scheduleMonth - 1;
+        let intendedYear = currentYear;
+        if (currentMonth > scheduleMonth) {
+          intendedYear++;
+        }
+        for (let year = intendedYear; year < ((desiredFutureMonths / 12 ) + currentYear); year++) {
+          this._addRecurringTransaction(transactions, year, scheduleMonth, recur, null)
         }
       }
     })
@@ -90,14 +101,18 @@ class App extends Component {
     this.setState({generatedTransactions: transactions})
   }
 
-  _addRecurringTransaction(transactions, year, i, recur, monthCount) {
+  /**
+   * @param month the month that the transaction should appear in, note that January is 0 and December is 11
+   * @private
+   */
+  _addRecurringTransaction(transactions, year, month, recur, monthCount) {
     const todayDate = new Date().getDate();
     if (recur.scheduleDay < todayDate && monthCount ===1) {
       console.log("should skip bc of already happened this month")
     } else {
       transactions.push(new Transaction(
           0,
-          new Date(year, i, recur.scheduleDay).toLocaleDateString('en-CA'),
+          new Date(year, month, recur.scheduleDay).toLocaleDateString('en-CA'),
           recur.name,
           recur.account,
           recur.amount,
