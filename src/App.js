@@ -127,7 +127,7 @@ class App extends Component {
 
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-    let exportFileDefaultName = 'export.json';
+    let exportFileDefaultName = `expense-predictor-exported-${new Date().toISOString()}.json`;
 
     let linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
