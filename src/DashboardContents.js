@@ -19,6 +19,7 @@ export default function DashboardContents(props) {
   props.accounts.forEach(a => {
     runningBalances.set(a.name, 0)
   })
+  const showAccountColumn = false;
   return (
     <React.Fragment>
       <Title>Upcoming Transactions</Title>
@@ -28,7 +29,7 @@ export default function DashboardContents(props) {
             <TableCell></TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Account</TableCell>
+            {showAccountColumn && <TableCell>Account</TableCell>}
               {props.accounts.map(a => {
                   return <React.Fragment key={a.name + "_frag"}>
                       <TableCell key={a.name} title={"Starting balance updated " + a.asOfDate}>{a.name}</TableCell>
@@ -54,7 +55,7 @@ export default function DashboardContents(props) {
                       props.editDate(row, newDate)
                   }}>{row.date}</TableCell>
                   <TableCell key={"name"}>{row.name}</TableCell>
-                  <TableCell key={"account"}>{row.account}</TableCell>
+                  {showAccountColumn && <TableCell key={"account"}>{row.account}</TableCell>}
                     {props.accounts.map(a => {
                         if (a.name === row.account) {
                           runningBalances.set(a.name, runningBalances.get(a.name) + row.amount)
