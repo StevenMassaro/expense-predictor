@@ -248,7 +248,7 @@ function DashboardContent(props) {
                   />
                 </Paper>
               </Grid>}
-              {contents === expensesContents && <Grid item xs={12}>
+              {contents === expensesContents && <React.Fragment><Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <ExpensesContents
                       rows={props.rows}
@@ -258,9 +258,26 @@ function DashboardContent(props) {
                       editRowAmount={props.editRowAmount}
                       editRowName={props.editRowName}
                       deleteRow={props.deleteRow}
+                      title={"Non-recurring expenses"}
+                      showAddNewExpenseButton={true}
                   />
                 </Paper>
-              </Grid>}
+              </Grid>
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <ExpensesContents
+                      rows={props.removedTransactions}
+                      addRow={props.addRow}
+                      accounts={props.accounts}
+                      editRowDate={props.editRowDate}
+                      editRowAmount={props.editRowAmount}
+                      editRowName={props.editRowName}
+                      deleteRow={props.deleteRow}
+                      title={"Completed transactions"}
+                      showAddNewExpenseButton={false}
+                  />
+                </Paper>
+              </Grid></React.Fragment>}
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -287,5 +304,6 @@ export default function Dashboard(props) {
       editAmount={props.editAmount}
       editStartingBalance={props.editStartingBalance}
       increaseDesiredMonths={props.increaseDesiredMonths}
+      removedTransactions={props.removedTransactions}
   />;
 }

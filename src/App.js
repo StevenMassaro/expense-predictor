@@ -300,6 +300,7 @@ class App extends Component {
     return (<Dashboard
         accounts={this.state.accounts}
         rows={this.state.rows}
+        removedTransactions={this.state.removedTransactions}
         addRow={this.addRow}
         deleteRow={this.deleteRow}
         generatedTransactions={this.state.generatedTransactions}

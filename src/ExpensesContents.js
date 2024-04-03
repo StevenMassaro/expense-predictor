@@ -17,7 +17,7 @@ function preventDefault(event) {
 export default function ExpensesContents(props) {
   return (
     <React.Fragment>
-      <Title>Single Expenses</Title>
+      <Title>{props.title}</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -54,9 +54,9 @@ export default function ExpensesContents(props) {
           })}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), new Date().toLocaleDateString('en-CA'), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
-        Add new expense
-      </Link>
+        {props.showAddNewExpenseButton && <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), new Date().toLocaleDateString('en-CA'), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
+            Add new expense
+        </Link>}
     </React.Fragment>
   );
 }
