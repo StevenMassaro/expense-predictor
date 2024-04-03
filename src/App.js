@@ -235,20 +235,24 @@ class App extends Component {
   }
 
   editAmount = (transaction, newAmount, isRecurring = false) => {
-    this.setState((prevState) => {
-      let transactions = isRecurring ? prevState.recurring : prevState.rows;
-      return transactions.map(pt => {
-        // Because we use transaction objects for recurringTransactions in buildTransactions, we need to omit some
-        // properties from the objects before doing the equality comparison (we're comparing transaction to
-        // recurringTransaction objects which are slightly different)
-        if (_.isEqual(
-            _.omit(pt, ['schedule', 'scheduleDay']),
-            isRecurring ? _.omit(transaction, ['date', 'type']) : transaction)) {
-          pt.amount = newAmount;
-        }
-        return pt;
-      })
-    }, this.updateLocalStorage)
+    if (!isRecurring) {
+      this.editRowAmount(transaction, newAmount)
+    } else {
+      this.setState((prevState) => {
+        let transactions = prevState.recurring;
+        return transactions.map(pt => {
+          // Because we use transaction objects for recurringTransactions in buildTransactions, we need to omit some
+          // properties from the objects before doing the equality comparison (we're comparing transaction to
+          // recurringTransaction objects which are slightly different)
+          if (_.isEqual(
+              _.omit(pt, ['schedule', 'scheduleDay']),
+              _.omit(transaction, ['date', 'type']))) {
+            pt.amount = newAmount;
+          }
+          return pt;
+        })
+      }, this.updateLocalStorage)
+    }
   }
 
 
