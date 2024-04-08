@@ -9,6 +9,7 @@ import Title from './Title';
 import Transaction from "./model/Transaction";
 import {DeleteOutline} from "@mui/icons-material";
 import _ from "lodash";
+import {MenuItem, Select} from "@mui/material";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -44,7 +45,17 @@ export default function ExpensesContents(props) {
                   const newName = e.currentTarget.innerText;
                   props.editRowName(row, newName)
                 }}>{row.name}</TableCell>
-                <TableCell key={"account"}>{row.account}</TableCell>
+                <TableCell key={"account"}>
+                  <Select
+                      labelId="account"
+                      id="account-select"
+                      value={row.account}
+                      label="Account"
+                      onChange={e => props.editAccount(row, e.target.value)}
+                  >
+                    {props.accounts.map(a => <MenuItem value={a.name}>{a.name}</MenuItem>)}
+                  </Select>
+                </TableCell>
                 <TableCell align="right" key={row.date + row.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newAmount = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""))
                   props.editRowAmount(row, newAmount)

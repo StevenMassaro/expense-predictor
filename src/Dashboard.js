@@ -260,6 +260,7 @@ function DashboardContent(props) {
                       deleteRow={props.deleteRow}
                       title={"Non-recurring expenses"}
                       showAddNewExpenseButton={true}
+                      editAccount={props.editAccount}
                   />
                 </Paper>
               </Grid>
@@ -275,6 +276,7 @@ function DashboardContent(props) {
                       deleteRow={props.deleteRow}
                       title={"Completed transactions"}
                       showAddNewExpenseButton={false}
+                      editAccount={props.editAccount}
                   />
                 </Paper>
               </Grid></React.Fragment>}
@@ -305,5 +307,6 @@ export default function Dashboard(props) {
       editStartingBalance={props.editStartingBalance}
       increaseDesiredMonths={props.increaseDesiredMonths}
       removedTransactions={props.removedTransactions}
+      editAccount={props.editAccount}
   />;
 }
