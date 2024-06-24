@@ -10,6 +10,7 @@ import Transaction from "./model/Transaction";
 import {DeleteOutline} from "@mui/icons-material";
 import _ from "lodash";
 import {MenuItem, Select} from "@mui/material";
+import {Utils} from "./Utils"
 
 function preventDefault(event) {
   event.preventDefault();
@@ -65,7 +66,7 @@ export default function ExpensesContents(props) {
           })}
         </TableBody>
       </Table>
-        {props.showAddNewExpenseButton && <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), new Date().toISOString().substring(0,10), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
+        {props.showAddNewExpenseButton && <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), Utils.formatDate(new Date()), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
             Add new expense
         </Link>}
     </React.Fragment>

@@ -2,6 +2,7 @@ import './App.css';
 import Dashboard from "./Dashboard";
 import React, { Component } from 'react';
 import Transaction from "./model/Transaction";
+import {Utils} from "./Utils"
 
 var _ = require('lodash');
 
@@ -109,7 +110,7 @@ class App extends Component {
     } else {
       transactions.push(new Transaction(
           0,
-          new Date(year, month, recur.scheduleDay).toISOString().substring(0,10),
+          Utils.formatDate(new Date(year, month, recur.scheduleDay)),
           recur.name,
           recur.account,
           recur.amount,
@@ -294,7 +295,7 @@ class App extends Component {
       return prevState.accounts.map(pa => {
         if (_.isEqual(pa, account)) {
           pa.startingBalance = newStartingBalance;
-          pa.asOfDate = new Date().toISOString().substring(0,10)
+          pa.asOfDate = Utils.formatDate(new Date())
         }
         return pa;
       })
