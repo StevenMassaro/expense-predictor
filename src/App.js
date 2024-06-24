@@ -109,7 +109,7 @@ class App extends Component {
     } else {
       transactions.push(new Transaction(
           0,
-          new Date(year, month, recur.scheduleDay).toLocaleDateString('en-CA'),
+          new Date(year, month, recur.scheduleDay).toISOString().substring(0,10),
           recur.name,
           recur.account,
           recur.amount,
@@ -294,7 +294,7 @@ class App extends Component {
       return prevState.accounts.map(pa => {
         if (_.isEqual(pa, account)) {
           pa.startingBalance = newStartingBalance;
-          pa.asOfDate = new Date().toLocaleDateString('en-CA')
+          pa.asOfDate = new Date().toISOString().substring(0,10)
         }
         return pa;
       })

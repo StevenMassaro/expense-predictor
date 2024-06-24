@@ -65,7 +65,7 @@ export default function ExpensesContents(props) {
           })}
         </TableBody>
       </Table>
-        {props.showAddNewExpenseButton && <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), new Date().toLocaleDateString('en-CA'), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
+        {props.showAddNewExpenseButton && <Link color="primary" href="#" onClick={() => props.addRow(new Transaction(crypto.randomUUID(), new Date().toISOString().substring(0,10), "new", props.accounts[0].name, 0))} sx={{ mt: 3 }}>
             Add new expense
         </Link>}
     </React.Fragment>
