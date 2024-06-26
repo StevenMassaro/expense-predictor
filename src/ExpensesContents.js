@@ -40,15 +40,15 @@ export default function ExpensesContents(props) {
               <TableRow key={row.date + row.name + row.id + "_transaction"}>
                 <TableCell key={row.date + row.name + row.id + "delete"} onClick={() => props.deleteRow(row)}><DeleteOutline fontSize={"small"}/></TableCell>
                 {props.showMergeExpenseButton && <TableCell key={row.date + row.name + row.id + "merge"} onClick={() => props.mergeRow(row)}><div title={"Remove transaction and update starting balance"}><Merge fontSize={"small"}/></div></TableCell>}
-                <TableCell key={"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                <TableCell key={row.date + row.name + row.id +"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newDate = e.currentTarget.innerText;
                   props.editRowDate(row, newDate)
                 }}>{row.date}</TableCell>
-                <TableCell key={"name"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                <TableCell key={row.date + row.name + row.id +"name"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newName = e.currentTarget.innerText;
                   props.editRowName(row, newName)
                 }}>{row.name}</TableCell>
-                <TableCell key={"account"}>
+                <TableCell key={row.date + row.name + row.id +"account"}>
                   <Select
                       labelId="account"
                       id="account-select"
@@ -56,10 +56,10 @@ export default function ExpensesContents(props) {
                       label="Account"
                       onChange={e => props.editAccount(row, e.target.value)}
                   >
-                    {props.accounts.map(a => <MenuItem value={a.name}>{a.name}</MenuItem>)}
+                    {props.accounts.map(a => <MenuItem key={row.date + row.name + row.id + a.name +"account"} value={a.name}>{a.name}</MenuItem>)}
                   </Select>
                 </TableCell>
-                <TableCell align="right" key={row.date + row.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                <TableCell align="right" key={row.date + row.name + row.id + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newAmount = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""))
                   props.editRowAmount(row, newAmount)
                 }}>{`$${!_.isNull(row.amount) && row.amount.toFixed(2)}`}</TableCell>

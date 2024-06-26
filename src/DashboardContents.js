@@ -20,6 +20,11 @@ export default function DashboardContents(props) {
     runningBalances.set(a.name, 0)
   })
   const showAccountColumn = false;
+
+  function getKey(row, a, uniqueString) {
+    return row.date + row.name + row.id + (a == null ? "" : a.name) + uniqueString;
+  }
+
   return (
     <React.Fragment>
       <Title>Upcoming Transactions</Title>
@@ -46,15 +51,15 @@ export default function DashboardContents(props) {
           {props.generatedTransactions && props.generatedTransactions.map((row) => {
             sum += row.amount;
             return (
-                <TableRow key={row.date + row.name + "_transaction"}>
+                <TableRow key={getKey(row, null, "_transaction")}>
                   <TableCell key={"remove"}><input type="checkbox" id="complete-transaction" onClick={x => {
                       props.addRemovedTransaction(row)
                   }}/></TableCell>
-                  <TableCell key={"date"} contentEditable={row.type !== "recurring"} suppressContentEditableWarning={true} onBlur={e => {
+                  <TableCell key={getKey(row, null, "date")} contentEditable={row.type !== "recurring"} suppressContentEditableWarning={true} onBlur={e => {
                       const newDate = e.currentTarget.innerText;
                       props.editDate(row, newDate)
                   }}>{row.date}</TableCell>
-                  <TableCell key={"name"}>{row.name}</TableCell>
+                  <TableCell key={getKey(row, null, "name")}>{row.name}</TableCell>
                   {showAccountColumn && <TableCell key={"account"}>{row.account}</TableCell>}
                     {props.accounts.map(a => {
                         if (a.name === row.account) {
@@ -63,7 +68,7 @@ export default function DashboardContents(props) {
                         let balance = (a.startingBalance + runningBalances.get(a.name)).toFixed(2);
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
-                            return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
+                            return <React.Fragment key={getKey(row, a, "_frag")}>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                                     const newAmount = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""))
                                     props.editAmount(row, newAmount, row.type === "recurring")
@@ -71,13 +76,13 @@ export default function DashboardContents(props) {
                                 <TableCell align="right" key={row.date + row.name +a.name + "_balance"} style={{color: balance <= 0 ? "red" : "black"}}>{balance}</TableCell>
                             </React.Fragment>
                         } else {
-                            return <React.Fragment key={row.date + row.name + a.name + "_frag"}>
+                            return <React.Fragment key={getKey(row, a, "_frag")}>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_amount"}>0.00</TableCell>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_balance"}>{balance}</TableCell>
                             </React.Fragment>
                         }
                     })}
-                  <TableCell align="right" key={"sum"}>{`$${sum.toFixed(2)}`}</TableCell>
+                  <TableCell align="right" key={getKey(row, null, "sum")}>{`$${sum.toFixed(2)}`}</TableCell>
                 </TableRow>
             );
           })}
