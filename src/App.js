@@ -217,7 +217,7 @@ class App extends Component {
    * Update the starting balance of the associated account and delete the row.
    */
   mergeRow = (row) => {
-    const matchingAccountObject = this.state.accounts.find(a => a.name === row.account);
+    const matchingAccountObject = row.findMatchingAccountObject(this.state.accounts);
     this.editStartingBalance(matchingAccountObject, matchingAccountObject.startingBalance + row.amount)
     this.deleteRow(row)
   }
