@@ -213,6 +213,15 @@ class App extends Component {
     }, this.updateLocalStorage)
   }
 
+  /**
+   * Update the starting balance of the associated account and delete the row.
+   */
+  mergeRow = (row) => {
+    const matchingAccountObject = this.state.accounts.find(a => a.name === row.account);
+    this.editStartingBalance(matchingAccountObject, matchingAccountObject.startingBalance + row.amount)
+    this.deleteRow(row)
+  }
+
   editDate = (transaction, newDate) => {
       this.setState((prevState) => {
           return prevState.rows.map(pt => {
@@ -327,6 +336,7 @@ class App extends Component {
         editStartingBalance={this.editStartingBalance}
         increaseDesiredMonths={this.increaseDesiredMonths}
         editAccount={this.editAccount}
+        mergeRow={this.mergeRow}
     />)
   }
 }

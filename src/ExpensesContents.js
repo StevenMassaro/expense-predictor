@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import Transaction from "./model/Transaction";
-import {DeleteOutline} from "@mui/icons-material";
+import {DeleteOutline, Merge} from "@mui/icons-material";
 import _ from "lodash";
 import {MenuItem, Select} from "@mui/material";
 import {Utils} from "./Utils"
@@ -24,6 +24,7 @@ export default function ExpensesContents(props) {
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
+            {props.showMergeExpenseButton && <TableCell></TableCell>}
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Account</TableCell>
@@ -38,6 +39,7 @@ export default function ExpensesContents(props) {
             return (
               <TableRow key={row.date + row.name + row.id + "_transaction"}>
                 <TableCell key={row.date + row.name + row.id + "delete"} onClick={() => props.deleteRow(row)}><DeleteOutline fontSize={"small"}/></TableCell>
+                {props.showMergeExpenseButton && <TableCell key={row.date + row.name + row.id + "merge"} onClick={() => props.mergeRow(row)}><div title={"Remove transaction and update starting balance"}><Merge fontSize={"small"}/></div></TableCell>}
                 <TableCell key={"date"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                   const newDate = e.currentTarget.innerText;
                   props.editRowDate(row, newDate)

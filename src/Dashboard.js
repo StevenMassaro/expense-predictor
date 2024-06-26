@@ -261,6 +261,8 @@ function DashboardContent(props) {
                       title={"Non-recurring expenses"}
                       showAddNewExpenseButton={true}
                       editAccount={props.editAccount}
+                      showMergeExpenseButton={true}
+                      mergeRow={props.mergeRow}
                   />
                 </Paper>
               </Grid>
@@ -277,6 +279,8 @@ function DashboardContent(props) {
                       title={"Completed transactions"}
                       showAddNewExpenseButton={false}
                       editAccount={props.editAccount}
+                      showMergeExpenseButton={false}
+                      mergeRow={props.mergeRow}
                   />
                 </Paper>
               </Grid></React.Fragment>}
@@ -308,5 +312,6 @@ export default function Dashboard(props) {
       increaseDesiredMonths={props.increaseDesiredMonths}
       removedTransactions={props.removedTransactions}
       editAccount={props.editAccount}
+      mergeRow={props.mergeRow}
   />;
 }
