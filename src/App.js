@@ -60,15 +60,19 @@ class App extends Component {
 
     this.state.recurring.forEach(recur => {
       if (recur.schedule === "monthly") {
+        // fill for the rest of this year
         let monthCount = 1;
         for (let month = currentMonth; month < 12; month++) {
           monthCount = this._addRecurringTransaction(transactions, currentYear, month, recur, monthCount);
         }
-        if (monthCount < this.state.desiredMonths) {
-          let nextYear = currentYear + 1;
-          for (let month = 0; month <= this.state.desiredMonths - monthCount; month++) {
-            this._addRecurringTransaction(transactions, nextYear, month, recur, monthCount);
+
+        // fill for all the future years desired
+        let nextYear = currentYear + 1;
+        for (let i = 0; i < this.state.desiredMonths/12; i++) {
+          for (let month = 0; month < 12; month++) {
+            monthCount = this._addRecurringTransaction(transactions, nextYear, month, recur, monthCount);
           }
+          nextYear++;
         }
       } else if (recur.schedule === "annually") {
         // subtracting one here because the human enters months as 1-12, but javascript uses 0-11
