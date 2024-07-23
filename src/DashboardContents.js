@@ -25,6 +25,11 @@ export default function DashboardContents(props) {
     return row.date + row.name + row.id + (a == null ? "" : a.name) + uniqueString;
   }
 
+  function getBalanceCell(row, a, balance) {
+    return <TableCell align="right" key={row.date + row.name + a.name + "_balance"}
+                      style={{color: balance <= 0 ? "red" : "black"}}>{balance}</TableCell>;
+  }
+
   return (
     <React.Fragment>
       <Title>Upcoming Transactions</Title>
@@ -69,16 +74,17 @@ export default function DashboardContents(props) {
                         // todo improve the reliability of matching the account here
                         if (a.name === row.account) {
                             return <React.Fragment key={getKey(row, a, "_frag")}>
-                                <TableCell align="right" key={row.date + row.name +a.name + "_amount"} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
-                                    const newAmount = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""))
-                                    props.editAmount(row, newAmount, row.type === "recurring")
-                                }}>{!_.isNull(row.amount) && row.amount.toFixed(2)}</TableCell>
-                                <TableCell align="right" key={row.date + row.name +a.name + "_balance"} style={{color: balance <= 0 ? "red" : "black"}}>{balance}</TableCell>
+                              <TableCell align="right" key={row.date + row.name + a.name + "_amount"}
+                                         contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
+                                const newAmount = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""))
+                                props.editAmount(row, newAmount, row.type === "recurring")
+                              }}>{!_.isNull(row.amount) && row.amount.toFixed(2)}</TableCell>
+                              {getBalanceCell(row, a, balance)}
                             </React.Fragment>
                         } else {
                             return <React.Fragment key={getKey(row, a, "_frag")}>
                                 <TableCell align="right" key={row.date + row.name +a.name + "_amount"}>0.00</TableCell>
-                                <TableCell align="right" key={row.date + row.name +a.name + "_balance"}>{balance}</TableCell>
+                                {getBalanceCell(row, a, balance)}
                             </React.Fragment>
                         }
                     })}
