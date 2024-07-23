@@ -81,7 +81,7 @@ class App extends Component {
         if (currentMonth > scheduleMonth) {
           intendedYear++;
         }
-        for (let year = intendedYear; year < ((this.state.desiredMonths / 12 ) + currentYear); year++) {
+        for (let year = intendedYear; year <= ((this.state.desiredMonths / 12 ) + currentYear); year++) {
           this._addRecurringTransaction(transactions, year, scheduleMonth, recur, null)
         }
       }
