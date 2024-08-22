@@ -46,7 +46,7 @@ export default function DashboardContents(props) {
                       <TableCell align="right" key={a.name+"_startingbalance"} title={"Starting balance updated " + a.asOfDate} contentEditable={true} suppressContentEditableWarning={true} onBlur={e => {
                           const newStartingBalance = Number(e.currentTarget.innerText.replace(",", "").replace("$", ""));
                           props.editStartingBalance(a, newStartingBalance)
-                      }}>${a.startingBalance}</TableCell>
+                      }}>${a.startingBalance.toFixed(2)}</TableCell>
                   </React.Fragment>
               })}
             <TableCell align="right">Sum</TableCell>
