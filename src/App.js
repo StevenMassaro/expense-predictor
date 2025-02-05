@@ -126,7 +126,7 @@ class App extends Component {
   }
 
   exportJson = () => {
-    const dataStr = this.jsonifyState();
+    const dataStr = this.jsonifyState(true);
 
     // todo - improve this file download logic
 
@@ -140,7 +140,7 @@ class App extends Component {
     linkElement.click();
   }
 
-  jsonifyState() {
+  jsonifyState(prettyPrint = false) {
     let data = {
       rows: this.state.rows,
       accounts: this.state.accounts,
@@ -148,6 +148,9 @@ class App extends Component {
       removedTransactions: this.state.removedTransactions
     }
 
+    if (prettyPrint) {
+      return JSON.stringify(data, null, 4)
+    }
     return JSON.stringify(data)
   }
 
