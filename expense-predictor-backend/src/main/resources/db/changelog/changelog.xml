@@ -14,7 +14,7 @@
                 <constraints unique="true" nullable="false"/>
             </column>
             <column name="balance" type="decimal"/>
-            <column name="created_at" type="timestamptz"/>
+            <column name="created_at" type="int"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

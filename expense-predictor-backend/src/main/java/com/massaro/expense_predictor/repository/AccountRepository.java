@@ -6,5 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "accounts", path = "accounts")
-public interface AccountRepository extends PagingAndSortingRepository<Account, Long> {
+public interface AccountRepository extends CrudRepository<Account, Long> {
 }
