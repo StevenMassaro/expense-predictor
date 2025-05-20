@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import EditableTransactionAmountCell from "../EditableTransactionAmountCell.tsx";
+import UndoableCheckboxCell from "../UndoableCheckboxCell.tsx";
 
 // Mock Data (normally fetched from an API)
 const mockAccounts = [
@@ -69,11 +70,6 @@ export default function Dashboard() {
         setTransactions(ledger);
     }, []);
 
-    function markPaid(id: number) {
-        console.log("paid " + id);
-        // send api call
-        // refresh list
-    }
 
     return (
         <div>
@@ -101,7 +97,7 @@ export default function Dashboard() {
                             <td className="p-3 text-right">${tx.beforeBalance.toFixed(2)}</td>
                             <EditableTransactionAmountCell tx={tx} />
                             <td className="p-3 text-right">${tx.afterBalance.toFixed(2)}</td>
-                            <td className="p-3 text-center"><input type="checkbox" id="paid-checkbox" onClick={() => markPaid(tx.id)}/></td>
+                            <UndoableCheckboxCell tx={tx}/>
                         </tr>
                     ))}
                     </tbody>
