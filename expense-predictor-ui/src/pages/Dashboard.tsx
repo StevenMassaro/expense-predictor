@@ -68,6 +68,12 @@ export default function Dashboard() {
         setTransactions(ledger);
     }, []);
 
+    function markPaid(id: number) {
+        console.log("paid " + id);
+        // send api call
+        // refresh list
+    }
+
     return (
         <div>
             <h2 className="text-xl font-semibold mb-4">Dashboard</h2>
@@ -82,6 +88,7 @@ export default function Dashboard() {
                         <th className="p-3 text-right">Before</th>
                         <th className="p-3 text-right">Amount</th>
                         <th className="p-3 text-right">After</th>
+                        <th className="p-3 text-right">Paid</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -95,6 +102,7 @@ export default function Dashboard() {
                                 {tx.amount < 0 ? '-' : '+'}${Math.abs(tx.amount).toFixed(2)}
                             </td>
                             <td className="p-3 text-right">${tx.afterBalance.toFixed(2)}</td>
+                            <td className="p-3 text-center"><input type="checkbox" id="paid-checkbox" onClick={() => markPaid(tx.id)}/></td>
                         </tr>
                     ))}
                     </tbody>
