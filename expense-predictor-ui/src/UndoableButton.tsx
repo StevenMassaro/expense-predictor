@@ -8,7 +8,7 @@ interface UndoableButtonProps {
 
 export default function UndoableButton({ object, countdownCompletedCallback, buttonText }: UndoableButtonProps) {
 
-    const [isCompleted, setisCompleted] = useState(false);
+    const [isPaid, setisPaid] = useState(false);
     const [undoCountdown, setUndoCountdown] = useState(null);
     const [timerId, setTimerId] = useState(null);
 
@@ -28,17 +28,17 @@ export default function UndoableButton({ object, countdownCompletedCallback, but
     ]);
 
     const handleButtonClick = () => {
-        setisCompleted(true);
+        setisPaid(true);
         setUndoCountdown(3);
     };
 
     const handleUndoClick = () => {
-        setisCompleted(false);
+        setisPaid(false);
         setUndoCountdown(null);
         if (timerId) clearTimeout(timerId);
     };
 
-    if (!isCompleted) {
+    if (!isPaid) {
         return (
             <button
                 onClick={handleButtonClick}
