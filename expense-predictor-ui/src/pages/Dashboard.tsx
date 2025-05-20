@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import EditableTransactionAmountCell from "../EditableTransactionAmountCell.tsx";
 
 // Mock Data (normally fetched from an API)
 const mockAccounts = [
@@ -98,9 +99,7 @@ export default function Dashboard() {
                             <td className="p-3">{tx.description}</td>
                             <td className="p-3 capitalize">{tx.accountId}</td>
                             <td className="p-3 text-right">${tx.beforeBalance.toFixed(2)}</td>
-                            <td className={`p-3 text-right ${tx.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                                {tx.amount < 0 ? '-' : '+'}${Math.abs(tx.amount).toFixed(2)}
-                            </td>
+                            <EditableTransactionAmountCell tx={tx} />
                             <td className="p-3 text-right">${tx.afterBalance.toFixed(2)}</td>
                             <td className="p-3 text-center"><input type="checkbox" id="paid-checkbox" onClick={() => markPaid(tx.id)}/></td>
                         </tr>
