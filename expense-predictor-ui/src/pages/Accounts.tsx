@@ -28,13 +28,11 @@ export default function Accounts() {
         e.preventDefault();
         if (!form.name.trim()) return;
 
-        const id = form.name.toLowerCase().replace(/\s+/g, '-');
         const newAccount = {
-            id,
             name: form.name,
             balance: parseFloat(form.balance || 0),
         };
-        // setAccounts(prev => [...prev, newAccount]);
+        addAccount(newAccount);
         setForm({ name: '', balance: '' });
     }
 

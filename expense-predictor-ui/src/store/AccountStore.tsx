@@ -34,10 +34,24 @@ export const accountStore = create<AccountStore>((set) => ({
         }
     },
 
-    addAccount: (account: Account) =>
-        set((state) => ({
-            accounts: [...state.accounts, account],
-        })),
+    addAccount: async (accountData) => {
+        try {
+            const res = await fetch('/api/accounts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(accountData),
+            });
+            if (!res.ok) throw new Error('Failed to create account');
+            const newAccount: Account = await res.json();
+
+            set((state) => ({
+                accounts: [...state.accounts, newAccount],
+            }));
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Unknown error';
+            set({ error: message });
+        }
+    },
 
     updateAccountBalance: (id: string, newBalance: number) =>
         set((state) => ({
