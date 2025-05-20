@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import UndoableButton from "../UndoableButton.tsx";
-
-const initialAccounts = [
-    { id: 'checking', name: 'Checking Account', balance: 5000 },
-    { id: 'savings', name: 'Savings Account', balance: 2000 },
-];
+import {type Account, accountStore} from "../store/AccountStore.tsx";
 
 export default function Accounts() {
-    const [accounts, setAccounts] = useState(initialAccounts);
     const [form, setForm] = useState({ name: '', balance: '' });
+    const {
+        accounts,
+        loading,
+        error,
+        fetchAccounts,
+        addAccount,
+        updateAccountBalance,
+    } = accountStore();
 
     function updateBalance(id, newBalance) {
-        setAccounts(accs =>
-            accs.map(a => (a.id === id ? { ...a, balance: parseFloat(newBalance) } : a))
-        );
+        // setAccounts(accs =>
+        //     accs.map(a => (a.id === id ? { ...a, balance: parseFloat(newBalance) } : a))
+        // );
     }
 
     function handleFormChange(e) {
@@ -31,7 +34,7 @@ export default function Accounts() {
             name: form.name,
             balance: parseFloat(form.balance || 0),
         };
-        setAccounts(prev => [...prev, newAccount]);
+        // setAccounts(prev => [...prev, newAccount]);
         setForm({ name: '', balance: '' });
     }
 
@@ -77,7 +80,7 @@ export default function Accounts() {
                 </tr>
                 </thead>
                 <tbody>
-                {accounts.map(account => (
+                {accounts.map((account: Account) => (
                     <tr key={account.id} className="border-t">
                         <td className="p-3">{account.name}</td>
                         <td className="p-3 text-right">${account.balance.toFixed(2)}</td>
