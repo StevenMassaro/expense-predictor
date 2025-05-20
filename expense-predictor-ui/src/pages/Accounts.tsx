@@ -14,9 +14,7 @@ export default function Accounts() {
     } = accountStore();
 
     function updateBalance(id, newBalance) {
-        // setAccounts(accs =>
-        //     accs.map(a => (a.id === id ? { ...a, balance: parseFloat(newBalance) } : a))
-        // );
+        updateAccountBalance(id, parseFloat(newBalance));
     }
 
     function handleFormChange(e) {

@@ -53,10 +53,23 @@ export const accountStore = create<AccountStore>((set) => ({
         }
     },
 
-    updateAccountBalance: (id: string, newBalance: number) =>
-        set((state) => ({
-            accounts: state.accounts.map((acc) =>
-                acc.id === id ? { ...acc, balance: newBalance } : acc
-            ),
-        })),
+    updateAccountBalance: async (id, newBalance) => {
+        try {
+            const res = await fetch(`/api/accounts/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ balance: newBalance }),
+            });
+            if (!res.ok) throw new Error('Failed to update account balance');
+
+            set((state) => ({
+                accounts: state.accounts.map((acc) =>
+                    acc.id === id ? { ...acc, balance: newBalance } : acc
+                ),
+            }));
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Unknown error';
+            set({ error: message });
+        }
+    },
 }));
