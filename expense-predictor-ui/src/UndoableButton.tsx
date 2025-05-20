@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
 
-export default function UndoableCheckboxCell({tx} ) {
+interface UndoableButtonProps {
+    object: any;
+    countdownCompletedCallback: (tx: any) => void;
+    buttonText: string;
+}
 
-    function markPaid(id: number) {
-        console.log("paid " + id);
-        // send api call
-        // refresh list
-    }
+export default function UndoableButton({ object, countdownCompletedCallback, buttonText }: UndoableButtonProps) {
 
-    const [isPaid, setIsPaid] = useState(false);
+    const [isCompleted, setisCompleted] = useState(false);
     const [undoCountdown, setUndoCountdown] = useState(null);
     const [timerId, setTimerId] = useState(null);
 
@@ -16,7 +16,7 @@ export default function UndoableCheckboxCell({tx} ) {
         if (undoCountdown === 0) {
             setUndoCountdown(null);
             setTimerId(null);
-            markPaid(tx.id);
+            countdownCompletedCallback(object);
             // if (onFinalized) onFinalized();
         } else if (undoCountdown !== null) {
             const id = setTimeout(() => setUndoCountdown((prev) => prev - 1), 1000);
@@ -27,24 +27,24 @@ export default function UndoableCheckboxCell({tx} ) {
         // , onFinalized
     ]);
 
-    const handlePaidClick = () => {
-        setIsPaid(true);
+    const handleButtonClick = () => {
+        setisCompleted(true);
         setUndoCountdown(3);
     };
 
     const handleUndoClick = () => {
-        setIsPaid(false);
+        setisCompleted(false);
         setUndoCountdown(null);
         if (timerId) clearTimeout(timerId);
     };
 
-    if (!isPaid) {
+    if (!isCompleted) {
         return (
             <button
-                onClick={handlePaidClick}
+                onClick={handleButtonClick}
                 className="px-2 py-1 text-sm bg-blue-500 text-black rounded"
             >
-                Paid
+                {buttonText}
             </button>
         );
     }

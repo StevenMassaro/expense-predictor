@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import UndoableButton from "../UndoableButton.tsx";
 
 const initialAccounts = [
     { id: 'checking', name: 'Checking Account', balance: 5000 },
@@ -72,6 +73,7 @@ export default function Accounts() {
                     <th className="p-3">Account</th>
                     <th className="p-3 text-right">Current Balance</th>
                     <th className="p-3 text-right">Update</th>
+                    <th className="p-3 text-right">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,6 +89,11 @@ export default function Accounts() {
                                 onBlur={e => updateBalance(account.id, e.target.value)}
                             />
                         </td>
+                        <UndoableButton
+                            object={account}
+                            countdownCompletedCallback={(account) => {console.log("deleted account " + account.id)}}
+                            buttonText={"Delete"}
+                        />
                     </tr>
                 ))}
                 </tbody>
