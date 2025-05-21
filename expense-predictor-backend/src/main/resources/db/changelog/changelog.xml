@@ -17,4 +17,22 @@
             <column name="created_at" type="int"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="2" author="steven.massaro">
+        <createTable tableName="recurring_transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="amount" type="decimal"/>
+            <column name="recurrence" type="varchar"/>
+            <column name="recurrence_day" type="int"/>
+            <column name="account_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_recurring_transaction_account" references="accounts(id)"/>
+            </column>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

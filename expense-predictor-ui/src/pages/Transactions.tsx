@@ -1,48 +1,52 @@
-import { useState } from 'react';
-
-const initialTransactions = [
-    {
-        id: 1,
-        description: 'Rent',
-        amount: -1500,
-        frequency: 'Monthly',
-        schedule: '1st of every month',
-        accountId: 'checking',
-    },
-    {
-        id: 2,
-        description: 'Paycheck',
-        amount: 2500,
-        frequency: 'Biweekly',
-        schedule: 'Every other Friday',
-        accountId: 'checking',
-    },
-];
+import { useEffect, useState } from 'react';
+import { recurringTransactionStore } from '../store/RecurringTransactionStore';
 
 export default function Transactions() {
-    const [transactions, setTransactions] = useState(initialTransactions);
+    const {
+        transactions,
+        fetchTransactions,
+        addTransaction,
+        loading,
+        error,
+    } = recurringTransactionStore();
+
     const [form, setForm] = useState({
-        description: '',
+        name: '',
         amount: '',
-        frequency: 'Monthly',
-        schedule: '',
-        accountId: 'checking',
+        recurrence: 'monthly',
+        recurrenceDay: '',
+        account: '',
     });
 
-    function handleChange(e) {
+    useEffect(() => {
+        fetchTransactions();
+    }, [fetchTransactions]);
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
         setForm(f => ({ ...f, [name]: value }));
     }
 
-    function handleAdd(e) {
+    async function handleAdd(e: React.FormEvent) {
         e.preventDefault();
-        const newTx = {
-            ...form,
-            id: Date.now(),
-            amount: parseFloat(form.amount),
-        };
-        setTransactions([...transactions, newTx]);
-        setForm({ description: '', amount: '', frequency: 'Monthly', schedule: '', accountId: 'checking' });
+        try {
+            await addTransaction({
+                name: form.name,
+                amount: parseFloat(form.amount),
+                recurrence: form.recurrence as any,
+                recurrenceDay: parseInt(form.recurrenceDay, 10),
+                account: form.account,
+            });
+            setForm({
+                name: '',
+                amount: '',
+                recurrence: 'MONTHLY',
+                recurrenceDay: '',
+                account: '',
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
@@ -52,9 +56,9 @@ export default function Transactions() {
             <form onSubmit={handleAdd} className="mb-6 grid gap-4 bg-white p-4 rounded shadow md:grid-cols-2">
                 <input
                     type="text"
-                    name="description"
+                    name="name"
                     placeholder="Description"
-                    value={form.description}
+                    value={form.name}
                     onChange={handleChange}
                     required
                     className="p-2 border rounded"
@@ -68,27 +72,34 @@ export default function Transactions() {
                     required
                     className="p-2 border rounded"
                 />
-                <select name="frequency" value={form.frequency} onChange={handleChange} className="p-2 border rounded">
-                    <option value="Weekly">Weekly</option>
-                    <option value="Biweekly">Biweekly</option>
-                    <option value="Monthly">Monthly</option>
+                <select
+                    name="recurrence"
+                    value={form.recurrence}
+                    onChange={handleChange}
+                    className="p-2 border rounded"
+                >
+                    <option value="monthly">Monthly</option>
+                    <option value="annually">Annually</option>
                 </select>
                 <input
-                    type="text"
-                    name="schedule"
-                    placeholder="Schedule (e.g., '1st of every month')"
-                    value={form.schedule}
+                    type="number"
+                    name="recurrenceDay"
+                    placeholder="Recurrence day (e.g. 15)"
+                    value={form.recurrenceDay}
                     onChange={handleChange}
                     className="p-2 border rounded"
                 />
-                <select name="accountId" value={form.accountId} onChange={handleChange} className="p-2 border rounded">
+                <select name="accountId" value={form.account} onChange={handleChange} className="p-2 border rounded">
                     <option value="checking">Checking</option>
                     <option value="savings">Savings</option>
                 </select>
-                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded self-start">
+                <button type="submit" className="bg-blue-600 text-black px-4 py-2 rounded self-start">
                     Add Transaction
                 </button>
             </form>
+
+            {loading && <p>Loading transactions...</p>}
+            {error && <p className="text-red-600">Error: {error}</p>}
 
             <table className="min-w-full bg-white shadow rounded-lg">
                 <thead className="bg-gray-100">
@@ -96,20 +107,20 @@ export default function Transactions() {
                     <th className="p-3">Description</th>
                     <th className="p-3">Amount</th>
                     <th className="p-3">Frequency</th>
-                    <th className="p-3">Schedule</th>
+                    <th className="p-3">Recurrence Day</th>
                     <th className="p-3">Account</th>
                 </tr>
                 </thead>
                 <tbody>
-                {transactions.map(tx => (
+                {transactions && transactions.map(tx => (
                     <tr key={tx.id} className="border-t">
-                        <td className="p-3">{tx.description}</td>
+                        <td className="p-3">{tx.name}</td>
                         <td className={`p-3 ${tx.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
                             ${Math.abs(tx.amount).toFixed(2)}
                         </td>
-                        <td className="p-3">{tx.frequency}</td>
-                        <td className="p-3">{tx.schedule}</td>
-                        <td className="p-3 capitalize">{tx.accountId}</td>
+                        <td className="p-3 capitalize">{tx.recurrence}</td>
+                        <td className="p-3">{tx.recurrenceDay}</td>
+                        <td className="p-3">account</td>
                     </tr>
                 ))}
                 </tbody>
