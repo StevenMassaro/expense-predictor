@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-export default function EditableTransactionAmountCell({ tx }) {
+export default function EditableTransactionAmountCell({ entry }) {
     const [isEditing, setIsEditing] = useState(false);
-    const [amount, setAmount] = useState(Math.abs(tx.amount).toFixed(2));
+    const [amount, setAmount] = useState(Math.abs(entry.amount).toFixed(2));
 
     const handleBlur = () => {
         setIsEditing(false);
@@ -18,7 +18,7 @@ export default function EditableTransactionAmountCell({ tx }) {
 
     return (
         <td
-            className={`p-3 text-right cursor-pointer ${tx.amount < 0 ? 'text-red-600' : 'text-green-600'}`}
+            className={`p-3 text-right cursor-pointer ${entry.amount < 0 ? 'text-red-600' : 'text-green-600'}`}
             onClick={handleClick}
         >
             {isEditing ? (
@@ -32,7 +32,7 @@ export default function EditableTransactionAmountCell({ tx }) {
                 />
             ) : (
                 <>
-                    {tx.amount < 0 ? '-' : '+'}${amount}
+                    {entry.amount < 0 ? '-' : '+'}${amount}
                 </>
             )}
         </td>

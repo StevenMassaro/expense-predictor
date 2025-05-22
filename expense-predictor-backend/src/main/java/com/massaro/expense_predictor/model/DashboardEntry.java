@@ -1,5 +1,7 @@
 package com.massaro.expense_predictor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,8 +12,14 @@ public class DashboardEntry {
 
     private final LocalDate date;
     private final String description;
-    private final String accountName;
-    private final BigDecimal before;
+    @JsonIgnore
+    private final Account account;
+    private BigDecimal before;
     private final BigDecimal amount;
-    private final BigDecimal after;
+    private BigDecimal after;
+
+    @JsonProperty
+    public String getAccountName() {
+        return account.getName();
+    }
 }

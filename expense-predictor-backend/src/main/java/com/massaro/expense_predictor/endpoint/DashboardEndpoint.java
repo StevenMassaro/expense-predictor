@@ -1,8 +1,10 @@
 package com.massaro.expense_predictor.endpoint;
 
+import com.massaro.expense_predictor.model.Account;
 import com.massaro.expense_predictor.model.DashboardEntry;
 import com.massaro.expense_predictor.model.Recurrence;
 import com.massaro.expense_predictor.model.RecurringTransaction;
+import com.massaro.expense_predictor.repository.AccountRepository;
 import com.massaro.expense_predictor.repository.RecurringTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,8 @@ public class DashboardEndpoint {
 
     @Autowired
     private RecurringTransactionRepository recurringTransactionRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping
     public List<DashboardEntry> list() {
@@ -43,7 +47,7 @@ public class DashboardEndpoint {
                 nextOccurrence = createdAt.toLocalDate().withDayOfMonth(Math.min(recurrenceDay, 28)); // fallback to 28 to avoid invalid dates
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     dashboardEntries.add(new DashboardEntry(
-                            nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccountName(), null, amount, null
+                            nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
                     ));
                     nextOccurrence = nextOccurrence.plusMonths(1).withDayOfMonth(Math.min(recurrenceDay, nextOccurrence.lengthOfMonth()));
                 }
@@ -54,7 +58,7 @@ public class DashboardEndpoint {
                 nextOccurrence = LocalDate.of(year, month, Math.min(recurrenceDay, YearMonth.of(year, month).lengthOfMonth()));
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     dashboardEntries.add(new DashboardEntry(
-                            nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccountName(), null, amount, null
+                            nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
                     ));
                     year++;
                     int daysInMonth = YearMonth.of(year, month).lengthOfMonth();
@@ -65,7 +69,19 @@ public class DashboardEndpoint {
 
         dashboardEntries.sort(Comparator.comparing(DashboardEntry::getDate));
 
+        setBeforeAndAfterAmounts(dashboardEntries);
+
         return dashboardEntries;
+    }
+
+    private void setBeforeAndAfterAmounts(List<DashboardEntry> dashboardEntries) {
+        for (DashboardEntry dashboardEntry : dashboardEntries) {
+            Account account = dashboardEntry.getAccount();
+            dashboardEntry.setBefore(account.getBalance());
+            BigDecimal newBalance = account.getBalance().add(dashboardEntry.getAmount());
+            dashboardEntry.setAfter(newBalance);
+            account.setBalance(newBalance);
+        }
     }
 
 }
