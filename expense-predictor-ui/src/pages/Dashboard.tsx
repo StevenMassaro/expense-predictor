@@ -42,9 +42,9 @@ export default function Dashboard() {
                             <td className="p-3">{entry.date}</td>
                             <td className="p-3">{entry.description}</td>
                             <td className="p-3 capitalize">{entry.accountName}</td>
-                            <td className="p-3 text-right">${entry.before.toFixed(2)}</td>
+                            <td className={`p-3 text-right ${entry.amount < 0 ? 'text-red-600' : 'text-black'}`}>${entry.before.toFixed(2)}</td>
                             <EditableTransactionAmountCell entry={entry} />
-                            <td className="p-3 text-right">${entry.after.toFixed(2)}</td>
+                            <td className={`p-3 text-right ${entry.amount < 0 ? 'text-red-600' : 'text-black'}`}>${entry.after.toFixed(2)}</td>
                             <UndoableButton
                                 object={entry}
                                 countdownCompletedCallback={(entry: DashboardEntry) => markPaid(entry)}
