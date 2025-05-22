@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { recurringTransactionStore } from '../store/RecurringTransactionStore';
+import {accountStore} from "../store/AccountStore.tsx";
 
 export default function Transactions() {
     const {
@@ -9,6 +10,10 @@ export default function Transactions() {
         loading,
         error,
     } = recurringTransactionStore();
+
+    const {
+        accounts
+    } = accountStore();
 
     const [form, setForm] = useState({
         name: '',
@@ -40,7 +45,7 @@ export default function Transactions() {
             setForm({
                 name: '',
                 amount: '',
-                recurrence: 'MONTHLY',
+                recurrence: 'monthly',
                 recurrenceDay: '',
                 account: '',
             });
@@ -89,9 +94,11 @@ export default function Transactions() {
                     onChange={handleChange}
                     className="p-2 border rounded"
                 />
-                <select name="accountId" value={form.account} onChange={handleChange} className="p-2 border rounded">
-                    <option value="checking">Checking</option>
-                    <option value="savings">Savings</option>
+                <select name="account" value={form.account} onChange={handleChange} className="p-2 border rounded">
+                    <option value="" disabled>-- Select an account --</option>
+                    {accounts.map(account => (
+                        <option key={account.id} value={account.id}>{account.name}</option>
+                    ))}
                 </select>
                 <button type="submit" className="bg-blue-600 text-black px-4 py-2 rounded self-start">
                     Add Transaction
@@ -120,7 +127,7 @@ export default function Transactions() {
                         </td>
                         <td className="p-3 capitalize">{tx.recurrence}</td>
                         <td className="p-3">{tx.recurrenceDay}</td>
-                        <td className="p-3">account</td>
+                        <td className="p-3">{tx.accountName}</td>
                     </tr>
                 ))}
                 </tbody>

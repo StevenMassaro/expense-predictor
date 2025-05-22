@@ -1,5 +1,6 @@
 package com.massaro.expense_predictor.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,9 +32,15 @@ public class RecurringTransaction {
     @Column(nullable = false)
     private int recurrenceDay;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @JsonProperty
+    public String getAccountName() {
+        return account.getName();
+    }
 }

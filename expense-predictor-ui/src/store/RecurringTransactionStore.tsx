@@ -29,6 +29,8 @@ export const recurringTransactionStore = create<RecurringTransactionStore>((set)
     },
 
     addTransaction: async (txData) => {
+        // Spring data rest expects the ID to be in this format
+        txData.account = "/accounts/" + txData.account;
         try {
             const res = await fetch('/api/recurring-transactions', {
                 method: 'POST',

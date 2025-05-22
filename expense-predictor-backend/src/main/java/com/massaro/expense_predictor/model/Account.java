@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,6 +25,9 @@ public class Account {
 
     @Column(nullable = false)
     private BigDecimal balance;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecurringTransaction> recurringTransactions;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
