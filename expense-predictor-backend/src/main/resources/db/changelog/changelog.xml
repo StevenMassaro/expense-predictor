@@ -35,4 +35,18 @@
             <column name="created_at" type="int"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="3" author="steven.massaro">
+        <createTable tableName="paid_transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parent_recurring_transaction_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_paid_transaction_parent_recurring_transaction_id" references="recurring_transactions(id)"/>
+            </column>
+            <column name="amount" type="decimal"/>
+            <column name="original_transaction_date" type="date"/>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

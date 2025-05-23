@@ -47,7 +47,7 @@ public class DashboardEndpoint {
                 nextOccurrence = createdAt.toLocalDate().withDayOfMonth(Math.min(recurrenceDay, 28)); // fallback to 28 to avoid invalid dates
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     dashboardEntries.add(new DashboardEntry(
-                            nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
+                            recurringTransaction.getId(), nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
                     ));
                     nextOccurrence = nextOccurrence.plusMonths(1).withDayOfMonth(Math.min(recurrenceDay, nextOccurrence.lengthOfMonth()));
                 }
@@ -58,7 +58,7 @@ public class DashboardEndpoint {
                 nextOccurrence = LocalDate.of(year, month, Math.min(recurrenceDay, YearMonth.of(year, month).lengthOfMonth()));
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     dashboardEntries.add(new DashboardEntry(
-                            nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
+                            recurringTransaction.getId(), nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
                     ));
                     year++;
                     int daysInMonth = YearMonth.of(year, month).lengthOfMonth();

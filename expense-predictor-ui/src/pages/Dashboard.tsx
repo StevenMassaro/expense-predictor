@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import EditableTransactionAmountCell from "../EditableTransactionAmountCell.tsx";
 import UndoableButton from "../UndoableButton.tsx";
 import {type DashboardEntry, dashboardStore} from "../store/DashboardStore.tsx";
+import {paidTransactionStore} from "../store/PaidTransactionStore.tsx";
 
 export default function Dashboard() {
     const {
@@ -9,13 +10,20 @@ export default function Dashboard() {
         entries
     } = dashboardStore();
 
+    const {
+        createPaidTransaction
+    } = paidTransactionStore();
+
     useEffect(() => {
         fetchDashboard();
     }, [fetchDashboard]);
 
-    function markPaid(id: any) {
-        console.log("paid " + id);
-        // send api call
+    function markPaid(entry: DashboardEntry) {
+        createPaidTransaction({
+            parentRecurringTransaction: entry.recurringTransactionId.toString(),
+            amount: entry.amount,
+            originalTransactionDate: entry.date,
+        })
         // refresh list
     }
 

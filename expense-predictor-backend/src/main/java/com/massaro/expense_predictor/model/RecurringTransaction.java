@@ -8,6 +8,8 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -35,6 +37,9 @@ public class RecurringTransaction {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
+
+    @OneToMany(mappedBy = "parentRecurringTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PaidTransaction> paidTransactions = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 export interface DashboardEntry {
+    recurringTransactionId: number;
     date: string; // ISO string from `LocalDate`
     description: string;
     accountName: string;
