@@ -1,9 +1,6 @@
 package com.massaro.expense_predictor.endpoint;
 
-import com.massaro.expense_predictor.model.Account;
-import com.massaro.expense_predictor.model.DashboardEntry;
-import com.massaro.expense_predictor.model.Recurrence;
-import com.massaro.expense_predictor.model.RecurringTransaction;
+import com.massaro.expense_predictor.model.*;
 import com.massaro.expense_predictor.repository.AccountRepository;
 import com.massaro.expense_predictor.repository.RecurringTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +15,18 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/dashboard")
 public class DashboardEndpoint {
 
-    @Autowired
-    private RecurringTransactionRepository recurringTransactionRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+    private final RecurringTransactionRepository recurringTransactionRepository;
+
+    public DashboardEndpoint(RecurringTransactionRepository recurringTransactionRepository) {
+        this.recurringTransactionRepository = recurringTransactionRepository;
+    }
 
     @GetMapping
     public List<DashboardEntry> list() {
@@ -41,14 +41,21 @@ public class DashboardEndpoint {
             int recurrenceDay = recurringTransaction.getRecurrenceDay(); // day of month or day of year
             String description = recurringTransaction.getName();
             BigDecimal amount = recurringTransaction.getAmount();
+            List<PaidTransaction> paidTransactions = recurringTransaction.getPaidTransactions();
+
+            Set<LocalDate> paidDates = paidTransactions.stream()
+                    .map(PaidTransaction::getOriginalTransactionDate)
+                    .collect(Collectors.toSet());
 
             LocalDate nextOccurrence;
             if (recurrence == Recurrence.monthly) {
                 nextOccurrence = createdAt.toLocalDate().withDayOfMonth(Math.min(recurrenceDay, 28)); // fallback to 28 to avoid invalid dates
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
-                    dashboardEntries.add(new DashboardEntry(
-                            recurringTransaction.getId(), nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
-                    ));
+                    if (!paidDates.contains(nextOccurrence)) {
+                        dashboardEntries.add(new DashboardEntry(
+                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), amount
+                        ));
+                    }
                     nextOccurrence = nextOccurrence.plusMonths(1).withDayOfMonth(Math.min(recurrenceDay, nextOccurrence.lengthOfMonth()));
                 }
             } else if (recurrence == Recurrence.annually) {
@@ -57,9 +64,11 @@ public class DashboardEndpoint {
                 int month = createdDate.getMonthValue();
                 nextOccurrence = LocalDate.of(year, month, Math.min(recurrenceDay, YearMonth.of(year, month).lengthOfMonth()));
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
-                    dashboardEntries.add(new DashboardEntry(
-                            recurringTransaction.getId(), nextOccurrence.atStartOfDay().toLocalDate(), description, recurringTransaction.getAccount(), amount
-                    ));
+                    if (!paidDates.contains(nextOccurrence)) {
+                        dashboardEntries.add(new DashboardEntry(
+                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), amount
+                        ));
+                    }
                     year++;
                     int daysInMonth = YearMonth.of(year, month).lengthOfMonth();
                     nextOccurrence = LocalDate.of(year, month, Math.min(recurrenceDay, daysInMonth));
