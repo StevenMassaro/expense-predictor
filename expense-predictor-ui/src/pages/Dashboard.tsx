@@ -18,13 +18,12 @@ export default function Dashboard() {
         fetchDashboard();
     }, [fetchDashboard]);
 
-    function markPaid(entry: DashboardEntry) {
-        createPaidTransaction({
+    async function markPaid(entry: DashboardEntry) {
+        await createPaidTransaction({
             parentRecurringTransaction: entry.recurringTransactionId.toString(),
             amount: entry.amount,
             originalTransactionDate: entry.date,
-        })
-        // refresh list
+        }).then(() => fetchDashboard())
     }
 
     return (
@@ -54,8 +53,9 @@ export default function Dashboard() {
                             <EditableTransactionAmountCell entry={entry} />
                             <td className={`p-3 text-right ${entry.amount < 0 ? 'text-red-600' : 'text-black'}`}>${entry.after.toFixed(2)}</td>
                             <UndoableButton
+                                key={"paid-button-" + entry.date + entry.description + entry.accountName}
                                 object={entry}
-                                countdownCompletedCallback={(entry: DashboardEntry) => markPaid(entry)}
+                                countdownCompletedCallback={async (entry: DashboardEntry) => await markPaid(entry)}
                                 buttonText={"Paid"}
                             />
                         </tr>
