@@ -16,7 +16,7 @@ export default function Dashboard() {
     } = accountStore();
 
     const {
-        createPaidTransaction
+        createCustomRecurringTransaction
     } = customRecurringTransactionStore();
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function Dashboard() {
     }, [fetchDashboard]);
 
     async function markPaid(entry: DashboardEntry) {
-        await createPaidTransaction({
+        await createCustomRecurringTransaction({
             parentRecurringTransaction: entry.recurringTransactionId.toString(),
             amount: entry.amount,
             originalTransactionDate: entry.date,

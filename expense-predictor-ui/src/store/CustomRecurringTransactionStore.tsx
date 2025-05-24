@@ -8,11 +8,11 @@ export interface CustomRecurringTransaction {
 }
 
 interface CustomRecurringTransactionStore {
-    createPaidTransaction: (transaction: CustomRecurringTransaction) => Promise<void>;
+    createCustomRecurringTransaction: (transaction: CustomRecurringTransaction) => Promise<void>;
 }
 
 export const customRecurringTransactionStore = create<CustomRecurringTransactionStore>(() => ({
-    createPaidTransaction: async (transaction) => {
+    createCustomRecurringTransaction: async (transaction) => {
         // Spring data rest expects the ID to be in this format
         transaction.parentRecurringTransaction = "/recurring-transactions/" + transaction.parentRecurringTransaction;
         const res = await fetch('/api/custom-recurring-transactions', {

@@ -1,15 +1,32 @@
 import { useState } from "react";
+import {customRecurringTransactionStore} from "./store/CustomRecurringTransactionStore.tsx";
+import {type DashboardEntry, dashboardStore} from "./store/DashboardStore.tsx";
 
-export default function EditableTransactionAmountCell({ entry }) {
+interface EditableTransactionAmountCellProps {
+    entry: DashboardEntry;
+}
+
+export default function EditableTransactionAmountCell({ entry }: EditableTransactionAmountCellProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [amount, setAmount] = useState(Math.abs(entry.amount).toFixed(2));
 
-    const handleBlur = () => {
+    const {
+        createCustomRecurringTransaction
+    } = customRecurringTransactionStore();
+
+    const {
+        fetchDashboard
+    } = dashboardStore();
+
+    const handleBlur = async () => {
         setIsEditing(false);
         const signedAmount = parseFloat(amount);
-        console.log('Updated amount:', signedAmount);
-        // Replace the above with an API call as needed
-        // Refresh
+        await createCustomRecurringTransaction({
+            parentRecurringTransaction: entry.recurringTransactionId.toString(),
+            amount: signedAmount,
+            originalTransactionDate: entry.date,
+            paid: false
+        }).then(() => fetchDashboard());
     };
 
     const handleClick = () => {
