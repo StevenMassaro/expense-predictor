@@ -46,13 +46,17 @@ public class DashboardEndpoint {
                     .map(CustomRecurringTransaction::getOriginalTransactionDate)
                     .collect(Collectors.toSet());
 
+            Set<CustomRecurringTransaction> transactionOverrides = customRecurringTransactions.stream()
+                    .filter(customRecurringTransaction -> !customRecurringTransaction.isPaid())
+                    .collect(Collectors.toSet());
+
             LocalDate nextOccurrence;
             if (recurrence == Recurrence.monthly) {
                 nextOccurrence = createdAt.toLocalDate().withDayOfMonth(Math.min(recurrenceDay, 28)); // fallback to 28 to avoid invalid dates
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     if (!paidDates.contains(nextOccurrence)) {
                         dashboardEntries.add(new DashboardEntry(
-                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), amount
+                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
                         ));
                     }
                     nextOccurrence = nextOccurrence.plusMonths(1).withDayOfMonth(Math.min(recurrenceDay, nextOccurrence.lengthOfMonth()));
@@ -65,7 +69,7 @@ public class DashboardEndpoint {
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     if (!paidDates.contains(nextOccurrence)) {
                         dashboardEntries.add(new DashboardEntry(
-                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), amount
+                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
                         ));
                     }
                     year++;
@@ -80,6 +84,17 @@ public class DashboardEndpoint {
         setBeforeAndAfterAmounts(dashboardEntries);
 
         return dashboardEntries;
+    }
+
+    private BigDecimal getIndividualTransactionAmount(Set<CustomRecurringTransaction> transactionOverrides, LocalDate nextOccurrence, BigDecimal amount) {
+        CustomRecurringTransaction customRecurringTransaction = transactionOverrides.stream().filter(
+                to -> to.getOriginalTransactionDate().equals(nextOccurrence)
+        ).findFirst().orElse(null);
+        if (customRecurringTransaction != null) {
+            return customRecurringTransaction.getAmount();
+        } else {
+            return amount;
+        }
     }
 
     private void setBeforeAndAfterAmounts(List<DashboardEntry> dashboardEntries) {
