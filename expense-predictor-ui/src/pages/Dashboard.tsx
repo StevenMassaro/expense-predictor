@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import EditableTransactionAmountCell from "../EditableTransactionAmountCell.tsx";
 import UndoableButton from "../UndoableButton.tsx";
 import {type DashboardEntry, dashboardStore} from "../store/DashboardStore.tsx";
-import {paidTransactionStore} from "../store/PaidTransactionStore.tsx";
+import {customRecurringTransactionStore} from "../store/CustomRecurringTransactionStore.tsx";
 import {accountStore} from "../store/AccountStore.tsx";
 
 export default function Dashboard() {
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     const {
         createPaidTransaction
-    } = paidTransactionStore();
+    } = customRecurringTransactionStore();
 
     useEffect(() => {
         fetchDashboard();
@@ -28,6 +28,7 @@ export default function Dashboard() {
             parentRecurringTransaction: entry.recurringTransactionId.toString(),
             amount: entry.amount,
             originalTransactionDate: entry.date,
+            paid: true
         }).then(() => {
             fetchDashboard()
             fetchAccounts()

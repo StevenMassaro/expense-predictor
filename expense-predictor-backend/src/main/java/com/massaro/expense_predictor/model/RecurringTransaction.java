@@ -39,7 +39,7 @@ public class RecurringTransaction {
     private Account account;
 
     @OneToMany(mappedBy = "parentRecurringTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PaidTransaction> paidTransactions = new ArrayList<>();
+    private List<CustomRecurringTransaction> customRecurringTransactions = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

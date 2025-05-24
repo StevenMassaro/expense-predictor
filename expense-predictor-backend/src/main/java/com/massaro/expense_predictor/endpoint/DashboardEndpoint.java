@@ -1,9 +1,7 @@
 package com.massaro.expense_predictor.endpoint;
 
 import com.massaro.expense_predictor.model.*;
-import com.massaro.expense_predictor.repository.AccountRepository;
 import com.massaro.expense_predictor.repository.RecurringTransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,10 +39,11 @@ public class DashboardEndpoint {
             int recurrenceDay = recurringTransaction.getRecurrenceDay(); // day of month or day of year
             String description = recurringTransaction.getName();
             BigDecimal amount = recurringTransaction.getAmount();
-            List<PaidTransaction> paidTransactions = recurringTransaction.getPaidTransactions();
+            List<CustomRecurringTransaction> customRecurringTransactions = recurringTransaction.getCustomRecurringTransactions();
 
-            Set<LocalDate> paidDates = paidTransactions.stream()
-                    .map(PaidTransaction::getOriginalTransactionDate)
+            Set<LocalDate> paidDates = customRecurringTransactions.stream()
+                    .filter(CustomRecurringTransaction::isPaid)
+                    .map(CustomRecurringTransaction::getOriginalTransactionDate)
                     .collect(Collectors.toSet());
 
             LocalDate nextOccurrence;

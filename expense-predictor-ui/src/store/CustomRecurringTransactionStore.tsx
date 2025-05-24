@@ -1,20 +1,21 @@
 import { create } from 'zustand';
 
-export interface PaidTransaction {
+export interface CustomRecurringTransaction {
     parentRecurringTransaction: string; // HAL-style URI (e.g., "/recurringTransactions/1")
     amount: number;
     originalTransactionDate: string; // ISO format: "YYYY-MM-DD"
+    paid: boolean;
 }
 
-interface PaidTransactionStore {
-    createPaidTransaction: (transaction: PaidTransaction) => Promise<void>;
+interface CustomRecurringTransactionStore {
+    createPaidTransaction: (transaction: CustomRecurringTransaction) => Promise<void>;
 }
 
-export const paidTransactionStore = create<PaidTransactionStore>(() => ({
+export const customRecurringTransactionStore = create<CustomRecurringTransactionStore>(() => ({
     createPaidTransaction: async (transaction) => {
         // Spring data rest expects the ID to be in this format
         transaction.parentRecurringTransaction = "/recurring-transactions/" + transaction.parentRecurringTransaction;
-        const res = await fetch('/api/paid-transactions', {
+        const res = await fetch('/api/custom-recurring-transactions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,7 +25,7 @@ export const paidTransactionStore = create<PaidTransactionStore>(() => ({
 
         if (!res.ok) {
             const errorText = await res.text();
-            throw new Error(errorText || 'Failed to create PaidTransaction');
+            throw new Error(errorText || 'Failed to create CustomRecurringTransaction');
         }
     },
 }));

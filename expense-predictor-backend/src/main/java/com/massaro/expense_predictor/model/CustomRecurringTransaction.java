@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @Entity
-@Table(name = "paid_transactions")
-public class PaidTransaction {
+@Table(name = "custom_recurring_transactions")
+public class CustomRecurringTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +28,9 @@ public class PaidTransaction {
 
     @Column(nullable = false)
     private LocalDate originalTransactionDate;
+
+    @Column(nullable = false)
+    private boolean paid;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

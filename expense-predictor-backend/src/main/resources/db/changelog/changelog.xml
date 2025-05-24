@@ -37,7 +37,7 @@
     </changeSet>
 
     <changeSet id="3" author="steven.massaro">
-        <createTable tableName="paid_transactions">
+        <createTable tableName="custom_recurring_transactions">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -46,6 +46,7 @@
             </column>
             <column name="amount" type="decimal"/>
             <column name="original_transaction_date" type="date"/>
+            <column name="paid" type="boolean"/>
             <column name="created_at" type="int"/>
         </createTable>
     </changeSet>
