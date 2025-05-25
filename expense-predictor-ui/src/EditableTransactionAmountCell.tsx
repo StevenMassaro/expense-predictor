@@ -49,7 +49,7 @@ export default function EditableTransactionAmountCell({ entry }: EditableTransac
                 />
             ) : (
                 <>
-                    {entry.amount < 0 ? '-' : '+'}${amount}
+                    ${amount}
                 </>
             )}
         </td>
