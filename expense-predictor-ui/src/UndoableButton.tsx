@@ -19,7 +19,10 @@ export default function UndoableButton({ object, countdownCompletedCallback, but
             countdownCompletedCallback(object);
             // if (onFinalized) onFinalized();
         } else if (undoCountdown !== null) {
-            const id = setTimeout(() => setUndoCountdown((prev) => prev - 1), 1000);
+            const id = setTimeout(() =>
+                    setUndoCountdown((prev) => (prev !== null ? prev - 1 : null)),
+                1000
+            );
             setTimerId(id);
             return () => clearTimeout(id);
         }
