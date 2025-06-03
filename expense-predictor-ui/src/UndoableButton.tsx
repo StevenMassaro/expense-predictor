@@ -9,8 +9,8 @@ interface UndoableButtonProps {
 export default function UndoableButton({ object, countdownCompletedCallback, buttonText }: UndoableButtonProps) {
 
     const [isPaid, setisPaid] = useState(false);
-    const [undoCountdown, setUndoCountdown] = useState(null);
-    const [timerId, setTimerId] = useState(null);
+    const [undoCountdown, setUndoCountdown] = useState<number | null>(null);
+    const [timerId, setTimerId] = useState<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         if (undoCountdown === 0) {
