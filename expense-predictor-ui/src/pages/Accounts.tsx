@@ -92,7 +92,7 @@ export default function Accounts() {
                         </td>
                         <UndoableButton
                             object={account}
-                            countdownCompletedCallback={(account) => {console.log("deleted account " + account.id)}}
+                            countdownCompletedCallback={(account: Account) => {console.log("deleted account " + account.id)}}
                             buttonText={"Delete"}
                         />
                     </tr>
