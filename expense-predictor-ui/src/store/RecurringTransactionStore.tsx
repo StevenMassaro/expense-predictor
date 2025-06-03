@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type {RecurringTransaction} from '../types/RecurringTransaction';
+import {API_BASE_URL} from "../App.tsx";
 
 interface RecurringTransactionStore {
     transactions: RecurringTransaction[];
@@ -18,7 +19,7 @@ export const recurringTransactionStore = create<RecurringTransactionStore>((set)
     fetchTransactions: async () => {
         set({ loading: true, error: null });
         try {
-            const res = await fetch('/api/recurring-transactions');
+            const res = await fetch(`${API_BASE_URL}/recurring-transactions`);
             if (!res.ok) throw new Error('Failed to fetch recurring transactions');
             const data = await res.json();
             set({ transactions: data._embedded["recurring-transactions"], loading: false });
@@ -32,7 +33,7 @@ export const recurringTransactionStore = create<RecurringTransactionStore>((set)
         // Spring data rest expects the ID to be in this format
         txData.account = "/accounts/" + txData.account;
         try {
-            const res = await fetch('/api/recurring-transactions', {
+            const res = await fetch(`${API_BASE_URL}/recurring-transactions`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(txData),

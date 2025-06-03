@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { API_BASE_URL } from '../App';
 
 export interface CustomRecurringTransaction {
     parentRecurringTransaction: string; // HAL-style URI (e.g., "/recurringTransactions/1")
@@ -15,7 +16,7 @@ export const customRecurringTransactionStore = create<CustomRecurringTransaction
     createCustomRecurringTransaction: async (transaction) => {
         // Spring data rest expects the ID to be in this format
         transaction.parentRecurringTransaction = "/recurring-transactions/" + transaction.parentRecurringTransaction;
-        const res = await fetch('/api/custom-recurring-transactions', {
+        const res = await fetch(`${API_BASE_URL}/custom-recurring-transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

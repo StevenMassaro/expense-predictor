@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import Accounts from './pages/Accounts';
 
+export const API_BASE_URL = process.env.NODE_ENV === 'production' ? '' : '/api';
+
 function App() {
   return (
       <Router>

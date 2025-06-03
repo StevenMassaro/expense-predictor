@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { API_BASE_URL } from '../App';
 
 export interface Account {
     id: string;
@@ -24,7 +25,7 @@ export const accountStore = create<AccountStore>((set) => ({
     fetchAccounts: async () => {
         set({ loading: true, error: null });
         try {
-            const res = await fetch('/api/accounts');
+            const res = await fetch(`${API_BASE_URL}/accounts`);
             if (!res.ok) throw new Error('Failed to fetch accounts');
             const data = await res.json();
             set({ accounts: data._embedded.accounts, loading: false });
@@ -36,7 +37,7 @@ export const accountStore = create<AccountStore>((set) => ({
 
     addAccount: async (accountData) => {
         try {
-            const res = await fetch('/api/accounts', {
+            const res = await fetch(`${API_BASE_URL}/accounts`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(accountData),
@@ -55,7 +56,7 @@ export const accountStore = create<AccountStore>((set) => ({
 
     updateAccountBalance: async (id, newBalance) => {
         try {
-            const res = await fetch(`/api/accounts/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/accounts/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ balance: newBalance }),

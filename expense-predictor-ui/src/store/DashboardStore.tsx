@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import {API_BASE_URL} from "../App.tsx";
 
 export interface DashboardEntry {
     recurringTransactionId: number;
@@ -24,7 +25,7 @@ export const dashboardStore = create<DashboardState>((set) => ({
     fetchDashboard: async () => {
         set({ loading: true, error: null });
         try {
-            const res = await fetch('/api/dashboard');
+            const res = await fetch(`${API_BASE_URL}/dashboard`);
             if (!res.ok) throw new Error('Failed to fetch dashboard');
             const data = await res.json();
             set({ entries: data, loading: false });
