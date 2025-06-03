@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="steven.massaro">
+        <createTable tableName="accounts">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="balance" type="decimal"/>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="steven.massaro">
+        <createTable tableName="recurring_transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="amount" type="decimal"/>
+            <column name="recurrence" type="varchar"/>
+            <column name="recurrence_day" type="int"/>
+            <column name="account_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_recurring_transaction_account" references="accounts(id)"/>
+            </column>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="steven.massaro">
+        <createTable tableName="custom_recurring_transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parent_recurring_transaction_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_paid_transaction_parent_recurring_transaction_id" references="recurring_transactions(id)"/>
+            </column>
+            <column name="amount" type="decimal"/>
+            <column name="original_transaction_date" type="date"/>
+            <column name="paid" type="boolean"/>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="steven.massaro">
+        <createTable tableName="single_transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="decimal"/>
+            <column name="date" type="date"/>
+            <column name="name" type="varchar"/>
+            <column name="paid" type="boolean"/>
+            <column name="account_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_recurring_transaction_account" references="accounts(id)"/>
+            </column>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
