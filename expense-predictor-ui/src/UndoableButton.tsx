@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
 
-interface UndoableButtonProps {
-    object: never;
-    countdownCompletedCallback: (object: never) => void;
+interface UndoableButtonProps<T> {
+    object: T;
+    countdownCompletedCallback: (object: T) => void;
     buttonText: string;
 }
 
-export default function UndoableButton({ object, countdownCompletedCallback, buttonText }: UndoableButtonProps) {
+export default function UndoableButton<T>({ object, countdownCompletedCallback, buttonText }: UndoableButtonProps<T>) {
 
     const [isPaid, setisPaid] = useState(false);
     const [undoCountdown, setUndoCountdown] = useState<number | null>(null);
