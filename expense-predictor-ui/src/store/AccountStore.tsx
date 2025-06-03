@@ -12,7 +12,7 @@ interface AccountStore {
     error: string | null;
 
     fetchAccounts: () => Promise<void>;
-    addAccount: (account: Account) => void;
+    addAccount: (account: Omit<Account, 'id'>) => void;
     updateAccountBalance: (id: string, newBalance: number) => void;
 }
 

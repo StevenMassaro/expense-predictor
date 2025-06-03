@@ -27,7 +27,7 @@ export default function Accounts() {
 
         const newAccount = {
             name: form.name,
-            balance: parseFloat(form.balance || 0),
+            balance: parseFloat(form.balance || "0"),
         };
         addAccount(newAccount);
         setForm({ name: '', balance: '' });
