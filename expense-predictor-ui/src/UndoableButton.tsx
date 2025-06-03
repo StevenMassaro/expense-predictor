@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 
 interface UndoableButtonProps {
-    object: any;
-    countdownCompletedCallback: (tx: any) => void;
+    object: never;
+    countdownCompletedCallback: (object: never) => void;
     buttonText: string;
 }
 
