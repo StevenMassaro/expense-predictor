@@ -50,4 +50,20 @@
             <column name="created_at" type="int"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="4" author="steven.massaro">
+        <createTable tableName="single_transactions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount" type="decimal"/>
+            <column name="date" type="date"/>
+            <column name="name" type="varchar"/>
+            <column name="paid" type="boolean"/>
+            <column name="account_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_recurring_transaction_account" references="accounts(id)"/>
+            </column>
+            <column name="created_at" type="int"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

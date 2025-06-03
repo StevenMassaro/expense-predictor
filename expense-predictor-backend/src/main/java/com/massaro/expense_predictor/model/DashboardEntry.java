@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class DashboardEntry {
 
     private final Long recurringTransactionId;
+    private final Long singleTransactionId;
     private final LocalDate date;
     private final String description;
     @JsonIgnore

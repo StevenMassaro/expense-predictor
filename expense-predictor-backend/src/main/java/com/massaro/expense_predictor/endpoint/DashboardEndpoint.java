@@ -2,6 +2,7 @@ package com.massaro.expense_predictor.endpoint;
 
 import com.massaro.expense_predictor.model.*;
 import com.massaro.expense_predictor.repository.RecurringTransactionRepository;
+import com.massaro.expense_predictor.repository.SingleTransactionRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,9 +22,12 @@ import java.util.stream.Collectors;
 public class DashboardEndpoint {
 
     private final RecurringTransactionRepository recurringTransactionRepository;
+    private final SingleTransactionRepository singleTransactionRepository;
 
-    public DashboardEndpoint(RecurringTransactionRepository recurringTransactionRepository) {
+    public DashboardEndpoint(RecurringTransactionRepository recurringTransactionRepository,
+                             SingleTransactionRepository singleTransactionRepository) {
         this.recurringTransactionRepository = recurringTransactionRepository;
+        this.singleTransactionRepository = singleTransactionRepository;
     }
 
     @GetMapping
@@ -56,7 +60,7 @@ public class DashboardEndpoint {
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     if (!paidDates.contains(nextOccurrence)) {
                         dashboardEntries.add(new DashboardEntry(
-                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
+                                recurringTransaction.getId(), null, nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
                         ));
                     }
                     nextOccurrence = nextOccurrence.plusMonths(1).withDayOfMonth(Math.min(recurrenceDay, nextOccurrence.lengthOfMonth()));
@@ -69,7 +73,7 @@ public class DashboardEndpoint {
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     if (!paidDates.contains(nextOccurrence)) {
                         dashboardEntries.add(new DashboardEntry(
-                                recurringTransaction.getId(), nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
+                                recurringTransaction.getId(), null, nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
                         ));
                     }
                     year++;
@@ -78,6 +82,16 @@ public class DashboardEndpoint {
                 }
             }
         }
+
+        List<SingleTransaction> singleTransactions = singleTransactionRepository.findAll();
+        dashboardEntries.addAll(singleTransactions.stream().map(st -> new DashboardEntry(
+                null,
+                st.getId(),
+                st.getDate(),
+                st.getName(),
+                st.getAccount(),
+                st.getAmount()
+        )).toList());
 
         dashboardEntries.sort(Comparator.comparing(DashboardEntry::getDate));
 
