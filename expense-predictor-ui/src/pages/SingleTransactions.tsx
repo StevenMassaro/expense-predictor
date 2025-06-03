@@ -40,6 +40,7 @@ export default function SingleTransactions() {
                 date: form.date,
                 account: form.account,
                 paid: false,
+                accountName: ""
             });
             setForm({
                 name: '',
