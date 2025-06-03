@@ -41,6 +41,7 @@ export default function RecurringTransactions() {
                 recurrence: form.recurrence as any,
                 recurrenceDay: parseInt(form.recurrenceDay, 10),
                 account: form.account,
+                accountName: ""
             });
             setForm({
                 name: '',

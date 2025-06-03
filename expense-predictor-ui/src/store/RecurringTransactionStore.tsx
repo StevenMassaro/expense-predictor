@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type {RecurringTransaction, Recurrence} from '../types/RecurringTransaction';
+import type {RecurringTransaction} from '../types/RecurringTransaction';
 
 interface RecurringTransactionStore {
     transactions: RecurringTransaction[];
