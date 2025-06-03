@@ -17,4 +17,5 @@ FROM ibm-semeru-runtimes:open-21-jre
 WORKDIR /app
 COPY --from=backend-build /app/expense-predictor-backend/target/*.jar app.jar
 EXPOSE 8080
+ENV DATABASE_FILEPATH=/db/expense-predictor-backend.sqlite
 ENTRYPOINT ["java", "-jar", "app.jar"]
