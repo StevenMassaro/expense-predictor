@@ -11,7 +11,7 @@ export default function Accounts() {
         updateAccountBalance,
     } = accountStore();
 
-    function updateBalance(id, newBalance) {
+    function updateBalance(id: string, newBalance: string) {
         updateAccountBalance(id, parseFloat(newBalance));
     }
 
