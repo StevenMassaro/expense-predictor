@@ -3,17 +3,8 @@ import './App.css'
 import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import Accounts from './pages/Accounts';
-import {accountStore} from "./store/AccountStore.tsx";
-import {useEffect} from "react";
 
 function App() {
-
-    const fetchAccounts = accountStore((s) => s.fetchAccounts);
-
-    useEffect(() => {
-        fetchAccounts();
-    }, [fetchAccounts]);
-
   return (
       <Router>
           <div className="min-h-screen bg-gray-100 text-gray-900 flex flex-col">

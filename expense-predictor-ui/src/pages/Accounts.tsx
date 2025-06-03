@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import UndoableButton from "../UndoableButton.tsx";
 import {type Account, accountStore} from "../store/AccountStore.tsx";
 
@@ -6,8 +6,6 @@ export default function Accounts() {
     const [form, setForm] = useState({ name: '', balance: '' });
     const {
         accounts,
-        loading,
-        error,
         fetchAccounts,
         addAccount,
         updateAccountBalance,
@@ -33,6 +31,10 @@ export default function Accounts() {
         addAccount(newAccount);
         setForm({ name: '', balance: '' });
     }
+
+    useEffect(() => {
+        fetchAccounts();
+    }, [fetchAccounts]);
 
     return (
         <div className="space-y-8">
