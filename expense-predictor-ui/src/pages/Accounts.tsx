@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import UndoableButton from "../UndoableButton.tsx";
 import {type Account, accountStore} from "../store/AccountStore.tsx";
+import * as React from "react";
 
 export default function Accounts() {
     const [form, setForm] = useState({ name: '', balance: '' });
@@ -15,12 +16,12 @@ export default function Accounts() {
         updateAccountBalance(id, parseFloat(newBalance));
     }
 
-    function handleFormChange(e) {
+    function handleFormChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
         setForm(f => ({ ...f, [name]: value }));
     }
 
-    function handleAddAccount(e) {
+    function handleAddAccount(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
         if (!form.name.trim()) return;
 
