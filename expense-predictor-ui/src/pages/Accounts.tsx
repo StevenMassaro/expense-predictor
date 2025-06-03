@@ -21,7 +21,7 @@ export default function Accounts() {
         setForm(f => ({ ...f, [name]: value }));
     }
 
-    function handleAddAccount(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleAddAccount(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!form.name.trim()) return;
 
