@@ -60,7 +60,12 @@ public class DashboardEndpoint {
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     if (!paidDates.contains(nextOccurrence)) {
                         dashboardEntries.add(new DashboardEntry(
-                                recurringTransaction.getId(), null, nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
+                                recurringTransaction.getId(),
+                                null,
+                                nextOccurrence,
+                                description,
+                                recurringTransaction.getAccount(),
+                                getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
                         ));
                     }
                     nextOccurrence = nextOccurrence.plusMonths(1).withDayOfMonth(Math.min(recurrenceDay, nextOccurrence.lengthOfMonth()));
@@ -73,7 +78,12 @@ public class DashboardEndpoint {
                 while (!nextOccurrence.isAfter(oneYearFromNow.toLocalDate())) {
                     if (!paidDates.contains(nextOccurrence)) {
                         dashboardEntries.add(new DashboardEntry(
-                                recurringTransaction.getId(), null, nextOccurrence, description, recurringTransaction.getAccount(), getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
+                                recurringTransaction.getId(),
+                                null,
+                                nextOccurrence,
+                                description,
+                                recurringTransaction.getAccount(),
+                                getIndividualTransactionAmount(transactionOverrides, nextOccurrence, amount)
                         ));
                     }
                     year++;
