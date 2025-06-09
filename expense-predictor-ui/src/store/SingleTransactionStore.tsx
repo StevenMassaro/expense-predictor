@@ -19,7 +19,7 @@ export const singleTransactionStore = create<SingleTransactionStore>((set) => ({
     fetchTransactions: async () => {
         set({ loading: true, error: null });
         try {
-            const res = await fetch(`${API_BASE_URL}/single-transactions`);
+            const res = await fetch(`${API_BASE_URL}/single-transactions?sort=date&sort=name`);
             if (!res.ok) throw new Error('Failed to fetch single transactions');
             const data = await res.json();
             set({ transactions: data._embedded["single-transactions"], loading: false });

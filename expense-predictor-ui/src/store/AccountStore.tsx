@@ -25,7 +25,7 @@ export const accountStore = create<AccountStore>((set) => ({
     fetchAccounts: async () => {
         set({ loading: true, error: null });
         try {
-            const res = await fetch(`${API_BASE_URL}/accounts`);
+            const res = await fetch(`${API_BASE_URL}/accounts?sort=name`);
             if (!res.ok) throw new Error('Failed to fetch accounts');
             const data = await res.json();
             set({ accounts: data._embedded.accounts, loading: false });
