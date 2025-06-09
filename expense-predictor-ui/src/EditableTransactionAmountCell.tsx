@@ -11,7 +11,7 @@ export default function EditableTransactionAmountCell({ entry }: EditableTransac
     const [amount, setAmount] = useState(Math.abs(entry.amount).toFixed(2));
 
     const {
-        createCustomRecurringTransaction
+        upsertCustomRecurringTransaction
     } = customRecurringTransactionStore();
 
     const {
@@ -21,7 +21,8 @@ export default function EditableTransactionAmountCell({ entry }: EditableTransac
     const handleBlur = async () => {
         setIsEditing(false);
         const signedAmount = parseFloat(amount);
-        await createCustomRecurringTransaction({
+        await upsertCustomRecurringTransaction({
+            id: entry.customRecurringTransactionId,
             parentRecurringTransaction: entry.recurringTransactionId.toString(),
             amount: signedAmount,
             originalTransactionDate: entry.date,

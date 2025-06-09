@@ -3,6 +3,7 @@ import {API_BASE_URL} from "../App.tsx";
 
 export interface DashboardEntry {
     recurringTransactionId: number;
+    customRecurringTransactionId: number;
     date: string; // ISO string from `LocalDate`
     description: string;
     accountName: string;

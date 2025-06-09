@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { API_BASE_URL } from '../App';
 
 export interface CustomRecurringTransaction {
+    id: number;
     parentRecurringTransaction: string; // HAL-style URI (e.g., "/recurringTransactions/1")
     amount: number;
     originalTransactionDate: string; // ISO format: "YYYY-MM-DD"
@@ -9,15 +10,15 @@ export interface CustomRecurringTransaction {
 }
 
 interface CustomRecurringTransactionStore {
-    createCustomRecurringTransaction: (transaction: CustomRecurringTransaction) => Promise<void>;
+    upsertCustomRecurringTransaction: (transaction: CustomRecurringTransaction) => Promise<void>;
 }
 
 export const customRecurringTransactionStore = create<CustomRecurringTransactionStore>(() => ({
-    createCustomRecurringTransaction: async (transaction) => {
+    upsertCustomRecurringTransaction: async (transaction) => {
         // Spring data rest expects the ID to be in this format
         transaction.parentRecurringTransaction = "/recurring-transactions/" + transaction.parentRecurringTransaction;
-        const res = await fetch(`${API_BASE_URL}/custom-recurring-transactions`, {
-            method: 'POST',
+        const res = await fetch(`${API_BASE_URL}/custom-recurring-transactions${transaction.id === null ? "" : `/${transaction.id}`}`, {
+            method: transaction.id === null ? 'POST' : 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },

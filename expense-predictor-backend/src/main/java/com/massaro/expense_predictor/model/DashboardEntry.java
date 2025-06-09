@@ -12,6 +12,7 @@ public class DashboardEntry {
 
     private final Long recurringTransactionId;
     private final Long singleTransactionId;
+    private final Long customRecurringTransactionId;
     private final LocalDate date;
     private final String description;
     @JsonIgnore

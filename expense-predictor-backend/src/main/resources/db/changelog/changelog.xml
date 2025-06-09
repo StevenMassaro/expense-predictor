@@ -64,4 +64,12 @@
             <column name="created_at" type="int"/>
         </createTable>
     </changeSet>
+
+    <!-- sqlite doesn't support addUniqueConstraint -->
+    <changeSet id="5" author="steven.massaro" dbms="!sqlite">
+        <addUniqueConstraint
+                tableName="custom_recurring_transactions"
+                columnNames="parent_recurring_transaction_id, original_transaction_date"
+                constraintName="uc_custom_recurring_parent_and_date"/>
+    </changeSet>
 </databaseChangeLog>
