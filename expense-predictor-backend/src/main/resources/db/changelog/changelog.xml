@@ -11,7 +11,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(50)">
-                <constraints unique="true" nullable="false"/>
+                <constraints unique="true" nullable="false" uniqueConstraintName="unique_accout_name"/>
             </column>
             <column name="balance" type="decimal"/>
             <column name="created_at" type="int"/>
