@@ -56,12 +56,12 @@ export default function Dashboard() {
                     <tbody>
                     {entries.map(entry => (
                         <tr className="border-t">
-                            <td className="p-3">{entry.date}</td>
-                            <td className="p-3">{entry.description}</td>
-                            <td className="p-3 capitalize">{entry.accountName}</td>
-                            <td className={`p-3 text-right ${entry.before < 0 ? 'font-black text-red-600' : 'text-black'}`}>${entry.before.toFixed(2)}</td>
-                            <EditableTransactionAmountCell entry={entry} />
-                            <td className={`p-3 text-right ${entry.after < 0 ? 'font-black text-red-600' : 'text-black'}`}>${entry.after.toFixed(2)}</td>
+                            <td key={"date-" + entry.date + entry.description + entry.accountName} className="p-3">{entry.date}</td>
+                            <td key={"description-" + entry.date + entry.description + entry.accountName} className="p-3">{entry.description}</td>
+                            <td key={"accountName-" + entry.date + entry.description + entry.accountName} className="p-3 capitalize">{entry.accountName}</td>
+                            <td key={"before-" + entry.date + entry.description + entry.accountName} className={`p-3 text-right ${entry.before < 0 ? 'font-black text-red-600' : 'text-black'}`}>${entry.before.toFixed(2)}</td>
+                            <EditableTransactionAmountCell key={"amount-" + entry.date + entry.description + entry.accountName} entry={entry} />
+                            <td key={"after-" + entry.date + entry.description + entry.accountName} className={`p-3 text-right ${entry.after < 0 ? 'font-black text-red-600' : 'text-black'}`}>${entry.after.toFixed(2)}</td>
                             <UndoableButton
                                 key={"paid-button-" + entry.date + entry.description + entry.accountName}
                                 object={entry}
