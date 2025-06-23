@@ -4,6 +4,7 @@ import UndoableButton from "../UndoableButton.tsx";
 import {type DashboardEntry, dashboardStore} from "../store/DashboardStore.tsx";
 import {customRecurringTransactionStore} from "../store/CustomRecurringTransactionStore.tsx";
 import {accountStore} from "../store/AccountStore.tsx";
+import {singleTransactionStore} from "../store/SingleTransactionStore.tsx";
 
 export default function Dashboard() {
     const {
@@ -19,21 +20,33 @@ export default function Dashboard() {
         upsertCustomRecurringTransaction
     } = customRecurringTransactionStore();
 
+    const {
+        markSingleTransactionPaid
+    } = singleTransactionStore();
+
     useEffect(() => {
         fetchDashboard();
     }, [fetchDashboard]);
 
     async function markPaid(entry: DashboardEntry) {
-        await upsertCustomRecurringTransaction({
-            id: entry.customRecurringTransactionId,
-            parentRecurringTransaction: entry.recurringTransactionId.toString(),
-            amount: entry.amount,
-            originalTransactionDate: entry.date,
-            paid: true
-        }).then(() => {
-            fetchDashboard()
-            fetchAccounts()
-        })
+        if (entry.customRecurringTransactionId || entry.recurringTransactionId) {
+            await upsertCustomRecurringTransaction({
+                id: entry.customRecurringTransactionId,
+                parentRecurringTransaction: entry.recurringTransactionId.toString(),
+                amount: entry.amount,
+                originalTransactionDate: entry.date,
+                paid: true
+            }).then(() => {
+                fetchDashboard()
+                fetchAccounts()
+            })
+        } else if (entry.singleTransactionId) {
+            await markSingleTransactionPaid(entry.singleTransactionId)
+                .then(() => {
+                    fetchDashboard()
+                    fetchAccounts()
+                })
+        }
     }
 
     return (

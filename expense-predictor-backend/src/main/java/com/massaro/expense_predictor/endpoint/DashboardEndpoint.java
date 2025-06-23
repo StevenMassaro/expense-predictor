@@ -97,7 +97,7 @@ public class DashboardEndpoint {
             }
         }
 
-        List<SingleTransaction> singleTransactions = singleTransactionRepository.findAll();
+        List<SingleTransaction> singleTransactions = singleTransactionRepository.findAllByPaid(false);
         dashboardEntries.addAll(singleTransactions.stream().map(st -> new DashboardEntry(
                 null,
                 st.getId(),
