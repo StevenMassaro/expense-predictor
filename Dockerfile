@@ -14,6 +14,9 @@ RUN cd expense-predictor-backend && mvn clean package -DskipTests
 
 # Stage 3: Runtime image
 FROM ibm-semeru-runtimes:open-21-jre
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends sqlite3 \
+ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=backend-build /app/expense-predictor-backend/target/*.jar app.jar
 EXPOSE 8080
